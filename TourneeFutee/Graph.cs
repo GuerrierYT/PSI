@@ -40,7 +40,7 @@ namespace TourneeFutee
         // Lecture seule
         public bool Directed
         {
-            get;    // TODO : implémenter
+            get { return directed; }
                     // pas de set
         }
 
@@ -48,14 +48,7 @@ namespace TourneeFutee
         // --- Gestion des sommets ---
         public bool IsAlreadyVertexExists(string name)
         {
-            if (vertices.ContainsKey(name))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return vertices.ContainsKey(name);
         }
 
         // Ajoute le sommet de nom `name` et de valeur `value` (0 par défaut) dans le graphe
