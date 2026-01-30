@@ -62,7 +62,8 @@ namespace TourneeFutee
             }
             else
             {
-                Vertex vertex = new Vertex(name, value);
+                int index = order;
+                Vertex vertex = new Vertex(name, index, value);
                 vertices.Add(name, vertex);
                 order++;
             }
@@ -139,6 +140,43 @@ namespace TourneeFutee
         public void AddEdge(string sourceName, string destinationName, float weight = 1)
         {
             // TODO : implémenter
+            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+            }
+            else
+            {
+                if (directed == true)
+                {
+                    Vertex sourceVertex = vertices[sourceName];
+                    Vertex destinationVertex = vertices[destinationName];
+
+                    if (sourceVertex.Neighbor.Contains(destinationVertex))
+                    {
+                        throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
+                    }
+                    else
+                    {
+                        sourceVertex.Neighbor.Add(destinationVertex);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, weight);
+                    }
+                }
+                else
+                {
+                    Vertex sourceVertex = vertices[sourceName];
+                    Vertex destinationVertex = vertices[destinationName];
+
+                    if (sourceVertex.Neighbor.Contains(destinationVertex) || destinationVertex.Neighbor.Contains(sourceVertex))
+                    {
+                        throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
+                    }
+                    else
+                    {
+                        sourceVertex.Neighbor.Add(destinationVertex);
+                        destinationVertex.Neighbor.Add(sourceVertex);
+                    }
+                }
+            }
         }
 
         /* Supprime l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName` du graphe

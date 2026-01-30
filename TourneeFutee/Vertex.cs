@@ -9,11 +9,13 @@ namespace TourneeFutee
     internal class Vertex
     {
         private string name;
+        private int index;
         private float value;
         private List<Vertex> neighbor = new List<Vertex>();
-        public Vertex(string name, float value = 0)
+        public Vertex(string name, int index, float value = 0)
         {
             this.name = name;
+            this.index = index;
             this.value = value;
         }
 
@@ -21,6 +23,11 @@ namespace TourneeFutee
         {
             get { return name; }
             set { this.name = value; }  //A verif
+        }
+        public int Index
+        {
+            get { return index; }
+            set { this.index = value; }
         }
         public float Value
         {
