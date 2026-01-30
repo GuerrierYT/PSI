@@ -2,14 +2,15 @@
 {
     public class Matrix
     {
-        // TODO : ajouter tous les attributs que vous jugerez pertinents 
         // Attributs
+
         private int nbRows;
         private int nbColumns;
         private float defaultValue;
         private float[,] mat;
 
         // Constructeurs
+
         /* Crée une matrice de dimensions `nbRows` x `nbColums`.
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
          * Lève une ArgumentOutOfRangeException si une des dimensions est négative
@@ -18,7 +19,7 @@
         {
             if (nbRows < 0 || nbColumns < 0)
             {
-                return;
+                throw new ArgumentOutOfRangeException();
             }
             this.nbRows = nbRows;
             this.nbColumns = nbColumns;
@@ -32,6 +33,8 @@
                 }
             }
         }
+
+        // Propriétés
 
         // Propriété : valeur par défaut utilisée pour remplir les nouvelles cases
         // Lecture seule
@@ -55,6 +58,11 @@
         {
             get { return nbColumns; }
                  // pas de set
+        }
+        public float[,] Mat
+        {
+            get { return mat; }
+            set { mat = value; }
         }
 
         /* Insère une ligne à l'indice `i`. Décale les lignes suivantes vers le bas.
@@ -89,6 +97,7 @@
                     }
                 }
             }
+            this.mat = newMat;
         }
 
         /* Insère une colonne à l'indice `j`. Décale les colonnes suivantes vers la droite.
@@ -123,6 +132,7 @@
                     }
                 }
             }
+            this.mat = newMat;
         }
 
         // Supprime la ligne à l'indice `i`. Décale les lignes suivantes vers le haut.
@@ -130,6 +140,27 @@
         public void RemoveRow(int i)
         {
             // TODO : implémenter
+            if(i < 0 || i >= nbRows)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            nbRows--;
+            float[,] newMat = new float[nbRows, nbColumns];
+            for (int row = 0; row < nbRows; row++)
+            {
+                for (int col = 0; col < nbColumns; col++)
+                {
+                    if (row < i)
+                    {
+                        newMat[row, col] = mat[row, col];
+                    }
+                    else
+                    {
+                        newMat[row, col] = mat[row + 1, col];
+                    }
+                }
+            }
+            this.mat = newMat;
         }
 
         // Supprime la colonne à l'indice `j`. Décale les colonnes suivantes vers la gauche.
@@ -137,6 +168,27 @@
         public void RemoveColumn(int j)
         {
             // TODO : implémenter
+            if (j < 0 || j >= nbColumns)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            nbColumns--;
+            float[,] newMat = new float[nbRows, nbColumns];
+            for (int row = 0; row < nbRows; row++)
+            {
+                for (int col = 0; col < nbColumns; col++)
+                {
+                    if (col < j)
+                    {
+                        newMat[row, col] = mat[row, col];
+                    }
+                    else
+                    {
+                        newMat[row, col] = mat[row, col + 1];
+                    }
+                }
+            }
+            this.mat = newMat;
         }
 
         // Renvoie la valeur à la ligne `i` et colonne `j`
