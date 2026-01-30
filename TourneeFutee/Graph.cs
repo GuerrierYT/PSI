@@ -28,7 +28,7 @@
         // Lecture seule
         public int Order
         {
-            get;    // TODO : implémenter
+            get { return order; }
                     // pas de set
         }
 
