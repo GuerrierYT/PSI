@@ -58,7 +58,7 @@ namespace TourneeFutee
         public void AddVertex(string name, float value = 0)
         {
             // TODO : implémenter
-            if (IsAlreadyVertexExists(name) == true)
+            if (vertices.ContainsKey(name))
             {
                 throw new ArgumentException("Un sommet avec le même nom existe déjà dans le graphe.");
             }
