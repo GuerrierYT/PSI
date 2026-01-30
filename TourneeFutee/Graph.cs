@@ -222,7 +222,7 @@ namespace TourneeFutee
                 }
                 else
                 {
-                    if (sourceVertex.Neighbor.Contains(destinationVertex) || destinationVertex.Neighbor.Contains(sourceVertex))
+                    if (!sourceVertex.Neighbor.Contains(destinationVertex) || !destinationVertex.Neighbor.Contains(sourceVertex))
                     {
                         throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
                     }
