@@ -176,6 +176,8 @@ namespace TourneeFutee
                     {
                         sourceVertex.Neighbor.Add(destinationVertex);
                         destinationVertex.Neighbor.Add(sourceVertex);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, weight);
+                        adjMat.SetValue(destinationVertex.Index, sourceVertex.Index, weight);
                     }
                 }
             }
