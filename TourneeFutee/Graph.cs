@@ -68,6 +68,8 @@ namespace TourneeFutee
                 Vertex vertex = new Vertex(name, index, value);
                 vertices.Add(name, vertex);
                 order++;
+                adjMat.AddRow(adjMat.NbRows);
+                adjMat.AddColumn(adjMat.NbColumns);
             }
         }
 
@@ -83,6 +85,9 @@ namespace TourneeFutee
             else
             {
                 vertices.Remove(name);
+                order--;
+                adjMat.RemoveRow(vertices[name].Index);
+                adjMat.RemoveColumn(vertices[name].Index);
             }
         }
 
@@ -244,9 +249,7 @@ namespace TourneeFutee
             {
                 throw new ArgumentException("Un des sommets n'existe pas.");
             }
-
-            // TODO : implémenter
-            return 0.0f;
+            return adjMat.GetValue(vertices[sourceName].Index, vertices[destinationName].Index);
         }
 
         /* Affecte le poids l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName` à `weight` 
