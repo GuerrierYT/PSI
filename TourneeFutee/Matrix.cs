@@ -3,22 +3,41 @@
     public class Matrix
     {
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
+        // Attributs
+        private int nbRows;
+        private int nbColumns;
+        private float defaultValue;
+        private float[,] mat;
 
-
+        // Constructeurs
         /* Crée une matrice de dimensions `nbRows` x `nbColums`.
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
          * Lève une ArgumentOutOfRangeException si une des dimensions est négative
          */
         public Matrix(int nbRows = 0, int nbColumns = 0, float defaultValue = 0)
         {
-            // TODO : implémenter
+            if (nbRows < 0 || nbColumns < 0)
+            {
+                return;
+            }
+            this.nbRows = nbRows;
+            this.nbColumns = nbColumns;
+            this.defaultValue = defaultValue;
+            this.mat = new float[nbRows, nbColumns];
+            for (int i = 0; i < nbRows; i++)
+            {
+                for (int j = 0; j < nbColumns; j++)
+                {
+                    mat[i, j] = defaultValue;
+                }
+            }
         }
 
         // Propriété : valeur par défaut utilisée pour remplir les nouvelles cases
         // Lecture seule
         public float DefaultValue
         {
-            get; // TODO : implémenter
+            get { return defaultValue; }
                  // pas de set
         }
 
@@ -26,7 +45,7 @@
         // Lecture seule
         public int NbRows
         {
-            get; // TODO : implémenter
+            get { return nbRows; }
                  // pas de set
         }
 
@@ -34,7 +53,7 @@
         // Lecture seule
         public int NbColumns
         {
-            get; // TODO : implémenter
+            get { return nbColumns; }
                  // pas de set
         }
 
@@ -46,6 +65,30 @@
         public void AddRow(int i)
         {
             // TODO : implémenter
+            if(i < 0 || i > nbRows)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            nbRows++;
+            float[,] newMat = new float[nbRows, nbColumns];
+            for (int row = 0; row < nbRows; row++)
+            {
+                for (int col = 0; col < nbColumns; col++)
+                {
+                    if (row < i)
+                    {
+                        newMat[row, col] = mat[row, col];
+                    }
+                    else if (row == i)
+                    {
+                        newMat[row, col] = defaultValue;
+                    }
+                    else
+                    {
+                        newMat[row, col] = mat[row - 1, col];
+                    }
+                }
+            }
         }
 
         /* Insère une colonne à l'indice `j`. Décale les colonnes suivantes vers la droite.
@@ -56,6 +99,30 @@
         public void AddColumn(int j)
         {
             // TODO : implémenter
+            if (j < 0 || j > nbColumns)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            nbColumns++;
+            float[,] newMat = new float[nbRows, nbColumns];
+            for (int row = 0; row < nbRows; row++)
+            {
+                for (int col = 0; col < nbColumns; col++)
+                {
+                    if (col < j)
+                    {
+                        newMat[row, col] = mat[row, col];
+                    }
+                    else if (col == j)
+                    {
+                        newMat[row, col] = defaultValue;
+                    }
+                    else
+                    {
+                        newMat[row, col] = mat[row, col - 1];
+                    }
+                }
+            }
         }
 
         // Supprime la ligne à l'indice `i`. Décale les lignes suivantes vers le haut.
@@ -76,21 +143,35 @@
         // Lève une ArgumentOutOfRangeException si `i` ou `j` est en dehors des indices valides
         public float GetValue(int i, int j)
         {
-            // TODO : implémenter
-            return 0.0f;
+            if (i < 0 || i >= nbRows || j < 0 || j >= nbColumns)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return this.mat[i, j];
         }
 
         // Affecte la valeur à la ligne `i` et colonne `j` à `v`
         // Lève une ArgumentOutOfRangeException si `i` ou `j` est en dehors des indices valides
         public void SetValue(int i, int j, float v)
         {
-            // TODO : implémenter
+            if (i < 0 || i >= nbRows || j < 0 || j >= nbColumns)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            this.mat[i, j] = v;
         }
 
         // Affiche la matrice
         public void Print()
         {
-            // TODO : implémenter
+            for (int row = 0; row < nbRows; row++)
+            {
+                for (int col = 0; col < nbColumns; col++)
+                {
+                    Console.Write(mat[row, col] + " ");
+                }
+                Console.WriteLine();
+            }
         }
 
 
