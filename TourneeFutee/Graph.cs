@@ -219,8 +219,11 @@ namespace TourneeFutee
             {
                 throw new ArgumentException("Un des sommets n'existe pas.");
             }
-
-            // TODO : implémenter
+            adjMat.SetValue(vertices[sourceName].Index, vertices[destinationName].Index, weight);
+            if (!directed)
+            {
+                adjMat.SetValue(vertices[destinationName].Index, vertices[sourceName].Index, weight);
+            }
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
