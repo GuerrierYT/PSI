@@ -5,10 +5,11 @@ namespace TourneeFutee
 {
     public class Graph
     {
-        public int order;
-        public bool directed;
-        public float noEdgeValue;
+        private int order;
+        private bool directed;
+        private float noEdgeValue;
         private Dictionary<string, Vertex> vertices = new Dictionary<string, Vertex>();
+        private Matrix adjMat;
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
 
 
@@ -23,6 +24,7 @@ namespace TourneeFutee
             this.noEdgeValue = noEdgeValue;
             this.order = 0;
             this.vertices = new Dictionary<string, Vertex>();
+            this.adjMat = new Matrix(0, 0, noEdgeValue);
         }
 
 
@@ -198,6 +200,11 @@ namespace TourneeFutee
          */
         public float GetEdgeWeight(string sourceName, string destinationName)
         {
+            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Un des sommets n'existe pas.");
+            }
+
             // TODO : implémenter
             return 0.0f;
         }
@@ -208,6 +215,11 @@ namespace TourneeFutee
          */
         public void SetEdgeWeight(string sourceName, string destinationName, float weight)
         {
+            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Un des sommets n'existe pas.");
+            }
+
             // TODO : implémenter
         }
 
