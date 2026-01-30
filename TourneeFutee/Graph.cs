@@ -202,26 +202,26 @@ namespace TourneeFutee
             }
             else
             {
-                if (directed == true)
+                Vertex sourceVertex = vertices[sourceName];
+                Vertex destinationVertex = vertices[destinationName];
+                if(adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue)
                 {
-                    Vertex sourceVertex = vertices[sourceName];
-                    Vertex destinationVertex = vertices[destinationName];
-
-                    if (sourceVertex.Neighbor.Contains(destinationVertex))
+                    throw new ArgumentException("L'arc n'existe pas");
+                }
+                else if (directed)
+                {
+                    if (!sourceVertex.Neighbor.Contains(destinationVertex))
                     {
-                        throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
+                        throw new ArgumentException("Il n'existe pas d'arc avec ces extrémités");
                     }
                     else
                     {
                         sourceVertex.Neighbor.Remove(destinationVertex);
-                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, 0);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, noEdgeValue);
                     }
                 }
                 else
                 {
-                    Vertex sourceVertex = vertices[sourceName];
-                    Vertex destinationVertex = vertices[destinationName];
-
                     if (sourceVertex.Neighbor.Contains(destinationVertex) || destinationVertex.Neighbor.Contains(sourceVertex))
                     {
                         throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
@@ -230,8 +230,8 @@ namespace TourneeFutee
                     {
                         sourceVertex.Neighbor.Remove(destinationVertex);
                         destinationVertex.Neighbor.Remove(sourceVertex);
-                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, 0);
-                        adjMat.SetValue(destinationVertex.Index, sourceVertex.Index, 0);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, noEdgeValue);
+                        adjMat.SetValue(destinationVertex.Index, sourceVertex.Index, noEdgeValue);
                     }
                 }
             }
@@ -249,7 +249,15 @@ namespace TourneeFutee
             {
                 throw new ArgumentException("Un des sommets n'existe pas.");
             }
-            return adjMat.GetValue(vertices[sourceName].Index, vertices[destinationName].Index);
+            float val = adjMat.GetValue(vertices[sourceName].Index, vertices[destinationName].Index);
+            if (val == noEdgeValue)
+            {
+                throw new ArgumentException("L'arc n'existe pas.");
+            }
+            else
+            {
+                return val;
+            }
         }
 
         /* Affecte le poids l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName` à `weight` 
