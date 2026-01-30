@@ -132,7 +132,6 @@ namespace TourneeFutee
                 {
                     neighborNames.Add(neighbor.Name);
                 }
-                // TODO : implémenter
             }
             else
             {
