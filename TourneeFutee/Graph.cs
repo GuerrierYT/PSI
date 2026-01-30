@@ -1,4 +1,7 @@
-﻿namespace TourneeFutee
+﻿using System.Net.Http.Headers;
+using System.Xml.Linq;
+
+namespace TourneeFutee
 {
     public class Graph
     {
@@ -19,6 +22,7 @@
             this.directed = directed;
             this.noEdgeValue = noEdgeValue;
             this.order = 0;
+            this.vertices = new Dictionary<string, Vertex>();
         }
 
 
@@ -42,13 +46,33 @@
 
 
         // --- Gestion des sommets ---
+        public bool IsAlreadyVertexExists(string name)
+        {
+            if (vertices.ContainsKey(name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         // Ajoute le sommet de nom `name` et de valeur `value` (0 par défaut) dans le graphe
         // Lève une ArgumentException s'il existe déjà un sommet avec le même nom dans le graphe
         public void AddVertex(string name, float value = 0)
         {
             // TODO : implémenter
-
+            if (IsAlreadyVertexExists(name) == true)
+            {
+                throw new ArgumentException("Un sommet avec le même nom existe déjà dans le graphe.");
+            }
+            else
+            {
+                Vertex vertex = new Vertex(name, value);
+                vertices.Add(name, vertex);
+                order++;
+            }
         }
 
 
@@ -82,8 +106,18 @@
         {
             List<string> neighborNames = new List<string>();
 
-            // TODO : implémenter
-
+            if (vertices.TryGetValue(vertexName, out Vertex vertex))
+            {
+                foreach (Vertex neighbor in vertex.Neighbor)
+                {
+                    neighborNames.Add(neighbor.Name);
+                }
+                // TODO : implémenter
+            }
+            else
+            {
+                throw new ArgumentException($"{vertexName} n'existe pas.");
+            }
             return neighborNames;
         }
 
