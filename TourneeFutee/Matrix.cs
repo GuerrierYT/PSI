@@ -61,7 +61,7 @@
         }
         public float[,] Mat
         {
-            get { return mat; }
+            // get { return mat; }
             set { mat = value; }
         }
 
