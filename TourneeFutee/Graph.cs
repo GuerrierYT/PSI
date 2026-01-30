@@ -64,7 +64,7 @@ namespace TourneeFutee
             }
             else
             {
-                int index = order - 1;
+                int index = order;
                 Vertex vertex = new Vertex(name, index, value);
                 vertices.Add(name, vertex);
                 order++;
