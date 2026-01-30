@@ -78,16 +78,17 @@ namespace TourneeFutee
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
         public void RemoveVertex(string name)
         {
-            if (IsAlreadyVertexExists(name) == false)
+            if (!IsAlreadyVertexExists(name))
             {
                 throw new ArgumentException($"{name} n'existe pas ! Il ne peut être supprimé.");
             }
             else
             {
-                vertices.Remove(name);
-                order--;
                 adjMat.RemoveRow(vertices[name].Index);
                 adjMat.RemoveColumn(vertices[name].Index);
+                vertices.Remove(name);
+                order--;
+                
             }
         }
 
