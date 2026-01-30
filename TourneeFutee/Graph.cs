@@ -84,6 +84,10 @@ namespace TourneeFutee
             }
             else
             {
+                foreach (var vertex in vertices.Values)
+                {
+                    vertex.Neighbor.Remove(vertices[name]);
+                }
                 adjMat.RemoveRow(vertices[name].Index);
                 adjMat.RemoveColumn(vertices[name].Index);
                 vertices.Remove(name);
