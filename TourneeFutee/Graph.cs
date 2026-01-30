@@ -4,6 +4,8 @@
     {
         public int order;
         public bool directed;
+        public float noEdgeValue;
+        private Dictionary<string, Vertex> vertices = new Dictionary<string, Vertex>();
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
 
 
@@ -14,6 +16,9 @@
         public Graph(bool directed, float noEdgeValue = 0)
         {
             // TODO : implémenter
+            this.directed = directed;
+            this.noEdgeValue = noEdgeValue;
+            this.order = 0;
         }
 
 
@@ -43,6 +48,7 @@
         public void AddVertex(string name, float value = 0)
         {
             // TODO : implémenter
+
         }
 
 

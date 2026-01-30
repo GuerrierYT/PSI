@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TourneeFutee
 {
-    internal class sommet
+    internal class Vertex
     {
     }
 }
