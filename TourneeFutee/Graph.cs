@@ -204,7 +204,7 @@ namespace TourneeFutee
             {
                 Vertex sourceVertex = vertices[sourceName];
                 Vertex destinationVertex = vertices[destinationName];
-                if(adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue)
+                if(adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue || adjMat.GetValue(destinationVertex.Index, sourceVertex.Index) == noEdgeValue)
                 {
                     throw new ArgumentException("L'arc n'existe pas");
                 }
