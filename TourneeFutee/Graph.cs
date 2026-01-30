@@ -2,7 +2,8 @@
 {
     public class Graph
     {
-
+        public int order;
+        public bool directed;
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
 
 
