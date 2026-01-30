@@ -64,7 +64,7 @@ namespace TourneeFutee
             }
             else
             {
-                int index = order;
+                int index = order - 1;
                 Vertex vertex = new Vertex(name, index, value);
                 vertices.Add(name, vertex);
                 order++;
@@ -191,7 +191,45 @@ namespace TourneeFutee
          */
         public void RemoveEdge(string sourceName, string destinationName)
         {
-            // TODO : implémenter
+            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+            }
+            else
+            {
+                if (directed == true)
+                {
+                    Vertex sourceVertex = vertices[sourceName];
+                    Vertex destinationVertex = vertices[destinationName];
+
+                    if (sourceVertex.Neighbor.Contains(destinationVertex))
+                    {
+                        throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
+                    }
+                    else
+                    {
+                        sourceVertex.Neighbor.Remove(destinationVertex);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, 0);
+                    }
+                }
+                else
+                {
+                    Vertex sourceVertex = vertices[sourceName];
+                    Vertex destinationVertex = vertices[destinationName];
+
+                    if (sourceVertex.Neighbor.Contains(destinationVertex) || destinationVertex.Neighbor.Contains(sourceVertex))
+                    {
+                        throw new ArgumentException("Il existe déjà un arc avec ces extrémités");
+                    }
+                    else
+                    {
+                        sourceVertex.Neighbor.Remove(destinationVertex);
+                        destinationVertex.Neighbor.Remove(sourceVertex);
+                        adjMat.SetValue(sourceVertex.Index, destinationVertex.Index, 0);
+                        adjMat.SetValue(destinationVertex.Index, sourceVertex.Index, 0);
+                    }
+                }
+            }
         }
 
         /* Renvoie le poids de l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName`
