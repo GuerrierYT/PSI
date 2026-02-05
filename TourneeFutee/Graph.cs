@@ -270,9 +270,13 @@ namespace TourneeFutee
          */
         public void SetEdgeWeight(string sourceName, string destinationName, float weight)
         {
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'existe pas.");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             adjMat.SetValue(vertices[sourceName].Index, vertices[destinationName].Index, weight);
             if (!directed)
