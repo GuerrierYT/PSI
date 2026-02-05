@@ -272,11 +272,11 @@ namespace TourneeFutee
         {
             if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+                throw new ArgumentException("Le sommet source " + sourceName);
             }
             if (!IsAlreadyVertexExists(destinationName))
             {
-                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
+                throw new ArgumentException("Un des sommets n'existe pas.");
             }
             adjMat.SetValue(vertices[sourceName].Index, vertices[destinationName].Index, weight);
             if (!directed)
