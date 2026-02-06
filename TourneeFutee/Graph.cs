@@ -150,10 +150,13 @@ namespace TourneeFutee
          */
         public void AddEdge(string sourceName, string destinationName, float weight = 1)
         {
-            // TODO : implémenter
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            else if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             else
             {
