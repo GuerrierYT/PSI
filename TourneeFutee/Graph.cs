@@ -203,15 +203,19 @@ namespace TourneeFutee
          */
         public void RemoveEdge(string sourceName, string destinationName)
         {
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            else if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             else
             {
                 Vertex sourceVertex = vertices[sourceName];
                 Vertex destinationVertex = vertices[destinationName];
-                if(adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue || adjMat.GetValue(destinationVertex.Index, sourceVertex.Index) == noEdgeValue)
+                if (adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue || adjMat.GetValue(destinationVertex.Index, sourceVertex.Index) == noEdgeValue)
                 {
                     throw new ArgumentException("L'arc n'existe pas");
                 }
