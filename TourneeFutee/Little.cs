@@ -23,29 +23,35 @@ namespace TourneeFutee
         // (c'est à dire le cycle hamiltonien de plus faible coût)
         public Tour ComputeOptimalTour()
         {
-            this.graph.AdjMat.OverrideInfinite();
+            this.graph.AdjMat.OverrideInfinite(); // On remplace les valeurs infinies par une valeur plus grande que le coût de n'importe quelle tournée possible
             Stack<(Matrix, List<(string source, string destination)>, float)> branches = new Stack<(Matrix, List<(string source, string destination)>, float)>();
             List<(string source, string destination)> edges = new List<(string source, string destination)>();
             float cost = ReduceMatrix(graph.AdjMat);
-            do
+            do // Tant que la matrice de coûts contient plus de 2 lignes (ou colonnes)
             {
-                ReduceMatrix(graph.AdjMat);
-                branches.Push((graph.AdjMat, edges, cost));
+                ReduceMatrix(graph.AdjMat); // On réduit la matrice de coûts
+                branches.Push((graph.AdjMat, edges, cost)); // Problème de cost
                 (int, int, float) maxRegret = GetMaxRegret(graph.AdjMat);
                 cost += maxRegret.Item3;
+
                 graph.AdjMat.RemoveRow(maxRegret.Item1);
                 graph.AdjMat.RemoveColumn(maxRegret.Item2);
+
                 string source = graph.GetVertexNameFromInt(maxRegret.Item1);
                 string destination = graph.GetVertexNameFromInt(maxRegret.Item2);
                 edges.Add((source, destination));
+
+                // Affichage de la matrice de coûts et du coût de la tournée partielle à chaque itération
                 graph.AdjMat.Print();
                 Console.WriteLine(cost);
+
                 for (int i = 0; i < graph.AdjMat.NbRows; i++)
                 {
                     for (int j = 0; j < graph.AdjMat.NbColumns; j++)
                     {
                         string sourceTemp = graph.GetVertexNameFromInt(i);
                         string destinationTemp = graph.GetVertexNameFromInt(j);
+
                         if (IsForbiddenSegment((sourceTemp, destinationTemp), edges, graph.Order))
                         {
                             graph.AdjMat.SetValue(i, j, float.PositiveInfinity);
@@ -54,6 +60,7 @@ namespace TourneeFutee
                 }
             }
             while (graph.AdjMat.NbRows != 2);
+
             (Matrix, List<(string source, string destination)>, float) branch = branches.Pop();
             return new Tour(branch.Item2, branch.Item3);
         }
