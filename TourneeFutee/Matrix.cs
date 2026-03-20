@@ -303,6 +303,7 @@
             return min;
         }
 
+        // Remplace les éléments de la diagonale de la matrice par l'infini positif
         public Matrix OverrideInfinite()
         {
             for (int i = 0; i < nbRows; i++)

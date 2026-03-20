@@ -5,9 +5,8 @@
     {
         private float cost;
         private List<(string source, string destination)> segments;
-        // TODO : ajouter tous les attributs que vous jugerez pertinents 
-        Vertex Start;
-        // propriétés
+
+        // Propriétés
 
         // Coût total de la tournée
         public float Cost
@@ -21,13 +20,11 @@
             get { return segments.Count; }
         }
 
-
         // Renvoie vrai si la tournée contient le trajet `source`->`destination`
         public bool ContainsSegment((string source, string destination) segment)
         {
             return segments.Contains(segment);
         }
-
 
         // Affiche les informations sur la tournée : coût total et trajets
         public void Print()

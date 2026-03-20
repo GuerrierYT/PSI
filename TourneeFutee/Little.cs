@@ -22,10 +22,13 @@
         // (c'est à dire le cycle hamiltonien de plus faible coût)
         public Tour ComputeOptimalTour()
         {
+            this.graph.Adjmat.OverrideInfinite();
 
             ReduceMatrix(graph.Adjmat);
+            (int, int, float) maxRegret = GetMaxRegret(graph.Adjmat);
+            // Séparation en deux branches : l'une incluant le segment de regret maximal, et l'autre l'excluant
+            
 
-            // TODO : implémenter
             return new Tour();
         }
 

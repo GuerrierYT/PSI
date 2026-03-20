@@ -5,6 +5,7 @@ namespace TourneeFutee
 {
     public class Graph
     {
+        // Attributs privés de la classe Graph
         private int order;
         private bool directed;
         private float noEdgeValue;
@@ -43,7 +44,9 @@ namespace TourneeFutee
                     // pas de set
         }
 
-        public Matrix Adjmat
+        // Propriété : matrice d'adjacence
+        // Lecture seule
+        public Matrix AdjMat
         {
             get { return adjMat; }
         }
