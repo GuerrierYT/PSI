@@ -41,7 +41,7 @@
         public float DefaultValue
         {
             get { return defaultValue; }
-                 // pas de set
+            // pas de set
         }
 
         // Propriété : nombre de lignes
@@ -49,7 +49,7 @@
         public int NbRows
         {
             get { return nbRows; }
-                 // pas de set
+            // pas de set
         }
 
         // Propriété : nombre de colonnes
@@ -57,7 +57,7 @@
         public int NbColumns
         {
             get { return nbColumns; }
-                 // pas de set
+            // pas de set
         }
 
         // Propriété : matrice sous-jacente
@@ -75,7 +75,7 @@
          */
         public void AddRow(int i)
         {
-            if(i < 0 || i > nbRows)
+            if (i < 0 || i > nbRows)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -140,7 +140,7 @@
         // Lève une ArgumentOutOfRangeException si `i` est en dehors des indices valides
         public void RemoveRow(int i)
         {
-            if(i < 0 || i >= nbRows)
+            if (i < 0 || i >= nbRows)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -224,5 +224,32 @@
                 Console.WriteLine();
             }
         }
+
+        public float GetMinRow(int i)
+        {
+            float min = mat[i, 0];
+            for (int k = 0; k < nbColumns; k++)
+            {
+                if (mat[i, k] < min)
+                {
+                    min = mat[i, k];
+                }
+            }
+            return min;
+        }
+
+        public float GetMinCol(int j)
+        {
+            float min = mat[0, j];
+            for (int k = 0; k < nbRows; k++)
+            {
+                if (mat[k, j] < min)
+                {
+                    min = mat[k, j];
+                }
+            }
+            return min;
+        }
+
     }
 }

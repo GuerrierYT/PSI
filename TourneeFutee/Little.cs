@@ -33,11 +33,30 @@
 
         // Réduit la matrice `m` et revoie la valeur totale de la réduction
         // Après appel à cette méthode, la matrice `m` est *modifiée*.
-        public static float ReduceMatrix(Matrix m)
-        {
-            // TODO : implémenter
-            return 0.0f;
-        }
+            public static float ReduceMatrix(Matrix m)
+            {
+                // TODO : implémenter
+                float reductionCost = 0;
+            for (int i = 0; i < m.NbRows; i++)
+                {
+                    float minRow = m.GetMinRow(i);
+                reductionCost += minRow;
+                for (int j = 0; j < m.NbColumns; j++)
+                    {
+                        m.Mat[i, j] -= minRow;
+                    }
+                }
+                for (int j = 0; j < m.NbColumns; j++)
+                {
+                    float minCol = m.GetMinCol(j);
+                reductionCost += minCol;
+                for (int i = 0; i < m.NbRows; i++)
+                    {
+                        m.Mat[i, j] -= minCol;
+                    }
+                }
+                return 0.0f;
+            }
 
         // Renvoie le regret de valeur maximale dans la matrice de coûts `m` sous la forme d'un tuple `(int i, int j, float value)`
         // où `i`, `j`, et `value` contiennent respectivement la ligne, la colonne et la valeur du regret maximale
@@ -63,36 +82,6 @@
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
-
-
-        private float GetMinRow(Matrix graph, int i)
-        {
-            float[,] mat = graph.Mat;
-            float min = mat[i,0];
-            for (int k = 0; k < graph.NbColumns; k++)
-            {
-                if (mat[i, k] < min)
-                {
-                    min = mat[i, k];
-                }
-            }
-            return min;
-        }
-
-        private float GetMinCol(Matrix graph, int j)
-        {
-            float[,] mat = graph.Mat;
-            float min = mat[0, j];
-            for (int k = 0; k < graph.NbRows; k++)
-            {
-                if (mat[k, j] < min)
-                {
-                    min = mat[k, j];
-                }
-            }
-            return min;
-        }
-
 
 
     } //FIN
