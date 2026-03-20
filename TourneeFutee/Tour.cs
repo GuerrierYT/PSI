@@ -6,7 +6,7 @@
         private float cost;
         private List<(string source, string destination)> segments;
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
-
+        Vertex Start;
         // propriétés
 
         // Coût total de la tournée
