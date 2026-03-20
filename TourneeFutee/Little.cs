@@ -62,7 +62,6 @@
         // où `i`, `j`, et `value` contiennent respectivement la ligne, la colonne et la valeur du regret maximale
         public static (int i, int j, float value) GetMaxRegret(Matrix m)
         {
-            // TODO : implémenter
             Matrix regrets = new Matrix(m.NbRows, m.NbColumns, 0.0f);
             (int,int,float) maxRegret = (0, 0, float.MinValue);
             for (int i = 0; i < m.NbRows; i++)
