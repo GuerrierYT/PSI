@@ -302,5 +302,14 @@
             }
             return min;
         }
+
+        public Matrix OverrideInfinite()
+        {
+            for (int i = 0; i < nbRows; i++)
+            {
+                mat[i,i] = float.PositiveInfinity;
+            }
+            return this;
+        }
     }
 }

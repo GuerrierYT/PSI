@@ -22,6 +22,7 @@
         // (c'est à dire le cycle hamiltonien de plus faible coût)
         public Tour ComputeOptimalTour()
         {
+
             ReduceMatrix(graph.Adjmat);
 
             // TODO : implémenter
@@ -35,7 +36,6 @@
         // Après appel à cette méthode, la matrice `m` est *modifiée*.
             public static float ReduceMatrix(Matrix m)
             {
-                // TODO : implémenter
                 float reductionCost = 0;
             for (int i = 0; i < m.NbRows; i++)
                 {
