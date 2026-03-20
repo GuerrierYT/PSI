@@ -18,7 +18,6 @@ namespace TourneeFutee
         // La valeur `noEdgeValue` est le poids modélisant l'absence d'un arc (0 par défaut)
         public Graph(bool directed, float noEdgeValue = 0)
         {
-            // TODO : implémenter
             this.directed = directed;
             this.noEdgeValue = noEdgeValue;
             this.order = 0;
