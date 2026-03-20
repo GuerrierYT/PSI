@@ -73,13 +73,30 @@
          */
         public static bool IsForbiddenSegment((string source, string destination) segment, List<(string source, string destination)> includedSegments, int nbCities)
         {
-            if (includedSegments.Count == 0)
+            string currentCity = segment.destination;
+            int count = 1;
+            bool found= true;
+            while (found!)
             {
-                return false;
-            }
+                found = false;
+                foreach (var s in includedSegments)
+                {
+                    if (s.source == currentCity)
+                    {
+                        currentCity = s.destination;
+                        count++;
+                        found = true;
+                        break;
+                    }
+                }
 
-            // TODO : implémenter
+                if(currentCity == segment.source)
+                {
+                    return count < nbCities;
+                }
+            }
             return false;
+
         }
         public Matrix GetMaxRegrets()
         {
