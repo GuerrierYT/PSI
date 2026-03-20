@@ -26,12 +26,13 @@ namespace TourneeFutee
             this.graph.AdjMat.OverrideInfinite();
             Stack<(Matrix, List<(string source, string destination)>, float)> branches = new Stack<(Matrix, List<(string source, string destination)>, float)>();
             List<(string source, string destination)> edges = new List<(string source, string destination)>();
-            float cost = 0;
+            float cost = ReduceMatrix(graph.AdjMat);
             do
             {
-                cost += ReduceMatrix(graph.AdjMat);
+                ReduceMatrix(graph.AdjMat);
                 branches.Push((graph.AdjMat, edges, cost));
                 (int, int, float) maxRegret = GetMaxRegret(graph.AdjMat);
+                cost += maxRegret.Item3;
                 graph.AdjMat.RemoveRow(maxRegret.Item1);
                 graph.AdjMat.RemoveColumn(maxRegret.Item2);
                 string source = graph.GetVertexNameFromInt(maxRegret.Item1);
