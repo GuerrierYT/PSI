@@ -57,9 +57,9 @@
             {
                 return false;
             }
-            
+
             // TODO : implémenter
-            return false;   
+            return false;
         }
         public static Matrix GetMaxRegrets(Graph graph)
         {
@@ -78,5 +78,36 @@
         }
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
-    }
+
+        private float GetMinRow(Matrix graph, int i)
+        {
+            float[,] mat = graph.Mat;
+            float min = mat[i,0];
+            for (int k = 0; k < graph.NbColumns; k++)
+            {
+                if (mat[i, k] < min)
+                {
+                    min = mat[i, k];
+                }
+            }
+            return min;
+        }
+
+        private float GetMinCol(Matrix graph, int j)
+        {
+            float[,] mat = graph.Mat;
+            float min = mat[0, j];
+            for (int k = 0; k < graph.NbRows; k++)
+            {
+                if (mat[k, j] < min)
+                {
+                    min = mat[k, j];
+                }
+            }
+            return min;
+        }
+
+
+
+    } //FIN
 }
