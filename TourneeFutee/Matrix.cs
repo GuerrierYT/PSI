@@ -72,7 +72,8 @@
         // Lecture seule
         public float MaxValue
         {
-            get {
+            get
+            {
                 float max = mat[0, 0];
                 for (int i = 0; i < nbRows; i++)
                 {
@@ -246,9 +247,10 @@
             }
         }
 
+        // Renvoie la valeur minimale de la ligne `i`
         public float GetMinRow(int i)
         {
-            float min = mat[i, 0];
+            float min = float.MaxValue;
             for (int k = 0; k < nbColumns; k++)
             {
                 if (mat[i, k] < min)
@@ -259,9 +261,10 @@
             return min;
         }
 
+        // Renvoie la valeur minimale de la colonne `j`
         public float GetMinCol(int j)
         {
-            float min = mat[0, j];
+            float min = float.MaxValue;
             for (int k = 0; k < nbRows; k++)
             {
                 if (mat[k, j] < min)
@@ -272,5 +275,32 @@
             return min;
         }
 
+        // Renvoie la valeur minimale de la ligne `i` en excluant la colonne `excludeCol`
+        public float GetMinRowExcept(int i, int excludeCol)
+        {
+            float min = float.MaxValue;
+            for (int k = 0; k < nbColumns; k++)
+            {
+                if (mat[i, k] < min && k != excludeCol)
+                {
+                    min = mat[i, k];
+                }
+            }
+            return min;
+        }
+
+        // Renvoie la valeur minimale de la colonne `j` en excluant la ligne `excludeRow`
+        public float GetMinColExcept(int j, int excludeRow)
+        {
+            float min = float.MaxValue;
+            for (int k = 0; k < nbRows; k++)
+            {
+                if (mat[k, j] < min && k != excludeRow)
+                {
+                    min = mat[k, j];
+                }
+            }
+            return min;
+        }
     }
 }

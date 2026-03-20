@@ -23,7 +23,6 @@
         public Tour ComputeOptimalTour()
         {
             ReduceMatrix(graph.Adjmat);
-            float max = this.GetMaxRegrets().MaxValue;
 
             // TODO : implémenter
             return new Tour();
@@ -64,8 +63,25 @@
         public static (int i, int j, float value) GetMaxRegret(Matrix m)
         {
             // TODO : implémenter
-            return (0, 0, 0.0f);
-
+            Matrix regrets = new Matrix(m.NbRows, m.NbColumns, 0.0f);
+            (int,int,float) maxRegret = (0, 0, float.MinValue);
+            for (int i = 0; i < m.NbRows; i++)
+            {
+                for (int j = 0; j < m.NbColumns; j++)
+                {
+                    if (m.GetValue(i, j) == 0.0f)
+                    {
+                        float minRow = m.GetMinRowExcept(i, j);
+                        float minCol = m.GetMinColExcept(j, i);
+                        float regret = minRow + minCol;
+                        if (regret > maxRegret.Item3)
+                        {
+                            maxRegret = (i, j, regret);
+                        }
+                    }
+                }
+            }
+            return maxRegret;
         }
 
         /* Renvoie vrai si le segment `segment` est un trajet parasite, c'est-à-dire s'il ferme prématurément la tournée incluant les trajets contenus dans `includedSegments`
@@ -97,21 +113,6 @@
             }
             return false;
 
-        }
-        public Matrix GetMaxRegrets()
-        {
-            Matrix regrets = new Matrix(graph.Adjmat.NbRows, graph.Adjmat.NbColumns, 0.0f);
-            for (int i = 0; i < graph.Adjmat.NbRows; i++)
-            {
-                for (int j = 0; j < graph.Adjmat.NbColumns; j++)
-                {
-                    if (graph.Adjmat.GetValue(i,j) == 0.0f)
-                    {
-                        regrets.SetValue(i, j, GetMaxRegret(graph.Adjmat).value);
-                    }
-                }
-            }
-            return regrets;
         }
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
