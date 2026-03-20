@@ -5,11 +5,18 @@
     public class Little
     {
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
-
+        Graph graph;
         // Instancie le planificateur en spécifiant le graphe modélisant un problème de voyageur de commerce
         public Little(Graph graph)
         {
-            // TODO : implémenter
+            this.graph = graph;
+        }
+
+
+        public Graph Graph
+        {
+            get { return graph; }
+            set { graph = value; }
         }
 
         // Trouve la tournée optimale dans le graphe `this.graph`
