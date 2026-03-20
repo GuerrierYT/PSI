@@ -43,6 +43,11 @@ namespace TourneeFutee
                     // pas de set
         }
 
+        public Matrix Adjmat
+        {
+            get { return adjMat; }
+        }
+
         // --- Gestion des sommets ---
         public bool IsAlreadyVertexExists(string name)
         {
