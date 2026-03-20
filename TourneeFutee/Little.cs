@@ -56,7 +56,7 @@
                         m.Mat[i, j] -= minCol;
                     }
                 }
-                return 0.0f;
+                return reductionCost;
             }
 
         // Renvoie le regret de valeur maximale dans la matrice de coûts `m` sous la forme d'un tuple `(int i, int j, float value)`
