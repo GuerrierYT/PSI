@@ -54,10 +54,24 @@
         {
 
             // TODO : implémenter
-            return false;   
+            return false;
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
-    }
+
+        private int GetMax(Matrix mat, int i, int j)
+        {
+            for (int k = 0; k < j; k++)
+            {
+                if (i < k)
+                {
+                    return k;
+                }
+            }
+        }
+
+
+
+    } //FIN
 }
