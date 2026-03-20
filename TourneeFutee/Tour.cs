@@ -20,6 +20,14 @@
             get { return segments.Count; }
         }
 
+        // Constructeur de la classe Tour
+
+        public Tour(List<(string source, string destination)> segments, float cost)
+        {
+            this.cost = cost;
+            this.segments = segments;
+        }
+
         // Renvoie vrai si la tournée contient le trajet `source`->`destination`
         public bool ContainsSegment((string source, string destination) segment)
         {
