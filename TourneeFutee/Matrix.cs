@@ -59,9 +59,12 @@
             get { return nbColumns; }
                  // pas de set
         }
+
+        // Propriété : matrice sous-jacente
+        // Lecture/écriture
         public float[,] Mat
         {
-            // get { return mat; }
+            get { return mat; }
             set { mat = value; }
         }
 
@@ -72,7 +75,6 @@
          */
         public void AddRow(int i)
         {
-            // TODO : implémenter
             if(i < 0 || i > nbRows)
             {
                 throw new ArgumentOutOfRangeException();
@@ -107,7 +109,6 @@
          */
         public void AddColumn(int j)
         {
-            // TODO : implémenter
             if (j < 0 || j > nbColumns)
             {
                 throw new ArgumentOutOfRangeException();
@@ -139,7 +140,6 @@
         // Lève une ArgumentOutOfRangeException si `i` est en dehors des indices valides
         public void RemoveRow(int i)
         {
-            // TODO : implémenter
             if(i < 0 || i >= nbRows)
             {
                 throw new ArgumentOutOfRangeException();
@@ -167,7 +167,6 @@
         // Lève une ArgumentOutOfRangeException si `j` est en dehors des indices valides
         public void RemoveColumn(int j)
         {
-            // TODO : implémenter
             if (j < 0 || j >= nbColumns)
             {
                 throw new ArgumentOutOfRangeException();
@@ -225,11 +224,5 @@
                 Console.WriteLine();
             }
         }
-
-
-        // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
-
     }
-
-
 }

@@ -10,8 +10,6 @@ namespace TourneeFutee
         private float noEdgeValue;
         private Dictionary<string, Vertex> vertices = new Dictionary<string, Vertex>();
         private Matrix adjMat;
-        // TODO : ajouter tous les attributs que vous jugerez pertinents 
-
 
         // --- Construction du graphe ---
 
@@ -26,7 +24,6 @@ namespace TourneeFutee
             this.vertices = new Dictionary<string, Vertex>();
             this.adjMat = new Matrix(0, 0, noEdgeValue);
         }
-
 
         // --- Propriétés ---
 
@@ -46,7 +43,6 @@ namespace TourneeFutee
                     // pas de set
         }
 
-
         // --- Gestion des sommets ---
         public bool IsAlreadyVertexExists(string name)
         {
@@ -57,10 +53,9 @@ namespace TourneeFutee
         // Lève une ArgumentException s'il existe déjà un sommet avec le même nom dans le graphe
         public void AddVertex(string name, float value = 0)
         {
-            // TODO : implémenter
             if (vertices.ContainsKey(name))
             {
-                throw new ArgumentException("Un sommet avec le même nom existe déjà dans le graphe.");
+                throw new ArgumentException("Un sommet avec le même nom (" + name + ") existe déjà dans le graphe.");
             }
             else
             {
@@ -72,7 +67,6 @@ namespace TourneeFutee
                 adjMat.AddColumn(adjMat.NbColumns);
             }
         }
-
 
         // Supprime le sommet de nom `name` du graphe (et tous les arcs associés)
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
@@ -92,7 +86,6 @@ namespace TourneeFutee
                 adjMat.RemoveColumn(vertices[name].Index);
                 vertices.Remove(name);
                 order--;
-                
             }
         }
 
@@ -150,10 +143,13 @@ namespace TourneeFutee
          */
         public void AddEdge(string sourceName, string destinationName, float weight = 1)
         {
-            // TODO : implémenter
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            else if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             else
             {
@@ -200,15 +196,19 @@ namespace TourneeFutee
          */
         public void RemoveEdge(string sourceName, string destinationName)
         {
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'a pas été trouvé dans le graphe (source et/ou destination)");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            else if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             else
             {
                 Vertex sourceVertex = vertices[sourceName];
                 Vertex destinationVertex = vertices[destinationName];
-                if(adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue || adjMat.GetValue(destinationVertex.Index, sourceVertex.Index) == noEdgeValue)
+                if (adjMat.GetValue(sourceVertex.Index, destinationVertex.Index) == noEdgeValue || adjMat.GetValue(destinationVertex.Index, sourceVertex.Index) == noEdgeValue)
                 {
                     throw new ArgumentException("L'arc n'existe pas");
                 }
@@ -249,9 +249,13 @@ namespace TourneeFutee
          */
         public float GetEdgeWeight(string sourceName, string destinationName)
         {
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
             {
-                throw new ArgumentException("Un des sommets n'existe pas.");
+                throw new ArgumentException("Le sommet source " + sourceName + " n'existe pas.");
+            }
+            else if (!IsAlreadyVertexExists(destinationName))
+            {
+                throw new ArgumentException("Le sommet destination " + destinationName + " n'existe pas.");
             }
             float val = adjMat.GetValue(vertices[sourceName].Index, vertices[destinationName].Index);
             if (val == noEdgeValue)
@@ -270,7 +274,11 @@ namespace TourneeFutee
          */
         public void SetEdgeWeight(string sourceName, string destinationName, float weight)
         {
-            if (!IsAlreadyVertexExists(sourceName) || !IsAlreadyVertexExists(destinationName))
+            if (!IsAlreadyVertexExists(sourceName))
+            {
+                throw new ArgumentException("Le sommet source " + sourceName);
+            }
+            if (!IsAlreadyVertexExists(destinationName))
             {
                 throw new ArgumentException("Un des sommets n'existe pas.");
             }
@@ -280,10 +288,5 @@ namespace TourneeFutee
                 adjMat.SetValue(vertices[destinationName].Index, vertices[sourceName].Index, weight);
             }
         }
-
-        // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
-
     }
-
-
 }
