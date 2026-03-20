@@ -23,6 +23,7 @@
         // (c'est à dire le cycle hamiltonien de plus faible coût)
         public Tour ComputeOptimalTour()
         {
+            ReduceMatrix(graph.Adjmat);
             // TODO : implémenter
             return new Tour();
         }
@@ -52,7 +53,11 @@
          */
         public static bool IsForbiddenSegment((string source, string destination) segment, List<(string source, string destination)> includedSegments, int nbCities)
         {
-
+            if (includedSegments.Count == 0)
+            {
+                return false;
+            }
+            
             // TODO : implémenter
             return false;   
         }
