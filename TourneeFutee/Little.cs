@@ -1,4 +1,6 @@
-﻿namespace TourneeFutee
+﻿using System.Collections.Generic;
+
+namespace TourneeFutee
 {
     // Résout le problème de voyageur de commerce défini par le graphe `graph`
     // en utilisant l'algorithme de Little
@@ -23,13 +25,35 @@
         public Tour ComputeOptimalTour()
         {
             this.graph.AdjMat.OverrideInfinite();
+            Stack<(Matrix, List<(string source, string destination)>, float)> branches = new Stack<(Matrix, List<(string source, string destination)>, float)>();
+            List<(string source, string destination)> edges = new List<(string source, string destination)>();
+            do
+            {
+                float cost = ReduceMatrix(graph.AdjMat);
+                branches.Push((graph.AdjMat, edges, cost));
+                (int, int, float) maxRegret = GetMaxRegret(graph.AdjMat);
+                graph.AdjMat.RemoveRow(maxRegret.Item1);
+                graph.AdjMat.RemoveColumn(maxRegret.Item2);
+                string source = graph.GetVertexNameFromInt(maxRegret.Item1);
+                string destination = graph.GetVertexNameFromInt(maxRegret.Item2);
+                edges.Add((source, destination));
+                for (int i = 0; i < graph.AdjMat.NbRows; i++)
+                {
+                    for (int j = 0; j < graph.AdjMat.NbColumns; j++)
+                    {
+                        string sourceTemp = graph.GetVertexNameFromInt(i);
+                        string destinationTemp = graph.GetVertexNameFromInt(j);
+                        if (IsForbiddenSegment((sourceTemp, destinationTemp), edges, graph.Order))
+                        {
+                            graph.AdjMat.SetValue(i, j, float.PositiveInfinity);
+                        }
+                    }
+                }
+            }
+            while (graph.AdjMat.NbRows == 2);
 
-            ReduceMatrix(graph.AdjMat);
-            (int, int, float) maxRegret = GetMaxRegret(graph.AdjMat);
-            // Séparation en deux branches : l'une incluant le segment de regret maximal, et l'autre l'excluant
-            
-
-            return new Tour();
+            (Matrix, List<(string source, string destination)>, float) branch = branches.Pop();
+            return new Tour(branch.Item2, branch.Item3);
         }
 
         // --- Méthodes utilitaires réalisant des étapes de l'algorithme de Little
@@ -119,5 +143,5 @@
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
 
+        }
     } //FIN
-}

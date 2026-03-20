@@ -33,7 +33,7 @@ namespace TourneeFutee
         public int Order
         {
             get { return order; }
-                    // pas de set
+            // pas de set
         }
 
         // Propriété : graphe orienté ou non
@@ -41,7 +41,7 @@ namespace TourneeFutee
         public bool Directed
         {
             get { return directed; }
-                    // pas de set
+            // pas de set
         }
 
         // Propriété : matrice d'adjacence
@@ -295,6 +295,18 @@ namespace TourneeFutee
             {
                 adjMat.SetValue(vertices[destinationName].Index, vertices[sourceName].Index, weight);
             }
+        }
+
+        public string GetVertexNameFromInt(int idCherche)
+        {
+            foreach (Vertex v in vertices.Values)
+            {
+                if (v.Index == idCherche)
+                {
+                    return v.Name;
+                }
+            }
+            return null;
         }
     }
 }
