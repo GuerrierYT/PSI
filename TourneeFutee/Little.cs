@@ -12,7 +12,6 @@
             this.graph = graph;
         }
 
-
         public Graph Graph
         {
             get { return graph; }
@@ -24,6 +23,7 @@
         public Tour ComputeOptimalTour()
         {
             ReduceMatrix(graph.Adjmat);
+
             // TODO : implémenter
             return new Tour();
         }
@@ -61,7 +61,21 @@
             // TODO : implémenter
             return false;   
         }
-
+        public static Matrix GetMaxRegrets(Graph graph)
+        {
+            Matrix regrets = new Matrix(graph.Adjmat.NbRows, graph.Adjmat.NbColumns, 0.0f);
+            for (int i = 0; i < graph.Adjmat.NbRows; i++)
+            {
+                for (int j = 0; j < graph.Adjmat.NbColumns; j++)
+                {
+                    if (graph.Adjmat.GetValue(i,j) == 0.0f)
+                    {
+                        regrets.SetValue(i, j, GetMaxRegret(graph.Adjmat).value);
+                    }
+                }
+            }
+            return regrets;
+        }
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
     }
