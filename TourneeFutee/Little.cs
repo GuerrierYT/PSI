@@ -23,6 +23,7 @@
         public Tour ComputeOptimalTour()
         {
             ReduceMatrix(graph.Adjmat);
+            float max = this.GetMaxRegrets().MaxValue;
 
             // TODO : implémenter
             return new Tour();
@@ -61,7 +62,7 @@
             // TODO : implémenter
             return false;
         }
-        public static Matrix GetMaxRegrets(Graph graph)
+        public Matrix GetMaxRegrets()
         {
             Matrix regrets = new Matrix(graph.Adjmat.NbRows, graph.Adjmat.NbColumns, 0.0f);
             for (int i = 0; i < graph.Adjmat.NbRows; i++)

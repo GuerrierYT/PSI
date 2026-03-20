@@ -68,6 +68,27 @@
             set { mat = value; }
         }
 
+        // Propriété : valeur maximale dans la matrice
+        // Lecture seule
+        public float MaxValue
+        {
+            get {
+                float max = mat[0, 0];
+                for (int i = 0; i < nbRows; i++)
+                {
+                    for (int j = 0; j < nbColumns; j++)
+                    {
+                        if (mat[i, j] > max)
+                        {
+                            max = mat[i, j];
+                        }
+                    }
+                }
+                return max;
+            }
+        }
+
+
         /* Insère une ligne à l'indice `i`. Décale les lignes suivantes vers le bas.
          * Toutes les cases de la nouvelle ligne contiennent DefaultValue.
          * Si `i` = NbRows, insère une ligne en fin de matrice
