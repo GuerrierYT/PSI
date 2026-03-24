@@ -118,6 +118,15 @@ namespace TourneeFutee
             vertices[name].Value = value;
         }
 
+        // Renvoie l'index (entier) correspondant au nom du sommet
+        public int GetIntFromVertexName(string name)
+        {
+            if (vertices.TryGetValue(name, out Vertex vertex))
+            {
+                return vertex.Index;
+            }
+            throw new ArgumentException($"{name} n'existe pas dans le graphe.");
+        }
 
         // Renvoie la liste des noms des voisins du sommet de nom `vertexName`
         // (si ce sommet n'a pas de voisins, la liste sera vide)

@@ -21,56 +21,147 @@ namespace TourneeFutee
 
         // Trouve la tournée optimale dans le graphe `this.graph`
         // (c'est à dire le cycle hamiltonien de plus faible coût)
+        // Structure légère pour stocker l'état d'un nœud de l'arbre
         public Tour ComputeOptimalTour()
         {
-            this.graph.AdjMat.OverrideInfinite(); // On remplace les valeurs infinies par une valeur plus grande que le coût de n'importe quelle tournée possible
-            Stack<(Matrix, List<(string source, string destination)>, float)> branches = new Stack<(Matrix, List<(string source, string destination)>, float)>();
-            List<(string source, string destination)> edges = new List<(string source, string destination)>();
-            float cost = ReduceMatrix(graph.AdjMat);
-            do // Tant que la matrice de coûts contient plus de 2 lignes (ou colonnes)
+            this.graph.AdjMat.OverrideInfinite();
+
+            // --- 1. INITIALISATION DES ÉTIQUETTES ET DE LA RACINE ---
+            List<string> initialLabels = new List<string>();
+            for (int i = 0; i < graph.Order; i++)
             {
-                ReduceMatrix(graph.AdjMat); // On réduit la matrice de coûts
-                branches.Push((graph.AdjMat, edges, cost)); // Problème de cost
-                (int, int, float) maxRegret = GetMaxRegret(graph.AdjMat);
-                cost += maxRegret.Item3;
+                initialLabels.Add(graph.GetVertexNameFromInt(i));
+            }
 
-                graph.AdjMat.RemoveRow(maxRegret.Item1);
-                graph.AdjMat.RemoveColumn(maxRegret.Item2);
+            Matrix rootMatrix = this.graph.AdjMat.Clone();
+            float initialCost = ReduceMatrix(rootMatrix);
 
-                string source = graph.GetVertexNameFromInt(maxRegret.Item1);
-                string destination = graph.GetVertexNameFromInt(maxRegret.Item2);
-                edges.Add((source, destination));
+            Stack<LittleNode> branches = new Stack<LittleNode>();
+            branches.Push(new LittleNode(
+                rootMatrix,
+                new List<(string source, string destination)>(),
+                initialCost,
+                new List<string>(initialLabels), // Lignes
+                new List<string>(initialLabels)  // Colonnes
+            ));
 
-                // Affichage de la matrice de coûts et du coût de la tournée partielle à chaque itération
-                graph.AdjMat.Print();
-                Console.WriteLine(cost);
+            float bestCost = float.PositiveInfinity;
+            List<(string source, string destination)> bestTourEdges = null;
 
-                for (int i = 0; i < graph.AdjMat.NbRows; i++)
+            // --- 2. EXPLORATION DE L'ARBRE ---
+            while (branches.Count > 0)
+            {
+                LittleNode current = branches.Pop();
+
+                if (current.Cost >= bestCost) continue;
+
+                // CONDITION D'ARRÊT : Il ne reste que 2 lignes/colonnes dans la matrice
+                if (current.Mat.NbRows == 2)
                 {
-                    for (int j = 0; j < graph.AdjMat.NbColumns; j++)
-                    {
-                        string sourceTemp = graph.GetVertexNameFromInt(i);
-                        string destinationTemp = graph.GetVertexNameFromInt(j);
+                    float finalCost = current.Cost;
+                    List<(string source, string destination)> finalEdges = new List<(string source, string destination)>(current.Edges);
 
-                        if (IsForbiddenSegment((sourceTemp, destinationTemp), edges, graph.Order))
+                    for (int i = 0; i < current.Mat.NbRows; i++)
+                    {
+                        for (int j = 0; j < current.Mat.NbColumns; j++)
                         {
-                            graph.AdjMat.SetValue(i, j, float.PositiveInfinity);
+                            if (!float.IsInfinity(current.Mat.GetValue(i, j)))
+                            {
+                                // On utilise les labels restants pour savoir qui on connecte
+                                finalEdges.Add((current.RowLabels[i], current.ColLabels[j]));
+                                finalCost += current.Mat.GetValue(i, j);
+                            }
                         }
                     }
+
+                    if (finalCost < bestCost)
+                    {
+                        bestCost = finalCost;
+                        bestTourEdges = finalEdges;
+                        Console.WriteLine($"Nouveau record de tournée trouvé ! Coût : {bestCost}");
+                    }
+                    continue;
+                }
+
+                // --- 3. SÉPARATION (BRANCHING) ---
+                (int row, int col, float regret) = GetMaxRegret(current.Mat);
+
+                // On récupère les vrais noms des sommets grâce à nos listes d'étiquettes
+                string source = current.RowLabels[row];
+                string destination = current.ColLabels[col];
+
+                // -- BRANCHE DROITE (On refuse l'arête) --
+                // La matrice garde la même taille, on met juste un infini
+                Matrix rightMat = current.Mat.Clone();
+                rightMat.SetValue(row, col, float.PositiveInfinity);
+                float rightCost = current.Cost + ReduceMatrix(rightMat);
+
+                if (rightCost < bestCost)
+                {
+                    branches.Push(new LittleNode(rightMat, new List<(string source, string destination)>(current.Edges), rightCost, new List<string>(current.RowLabels), new List<string>(current.ColLabels)));
+                }
+
+                // -- BRANCHE GAUCHE (On accepte l'arête) --
+                Matrix leftMat = current.Mat.Clone();
+                List<(string source, string destination)> leftEdges = new List<(string source, string destination)>(current.Edges);
+                leftEdges.Add((source, destination));
+
+                List<string> leftRowLabels = new List<string>(current.RowLabels);
+                List<string> leftColLabels = new List<string>(current.ColLabels);
+
+                // 1. ON SUPPRIME RÉELLEMENT LA LIGNE ET LA COLONNE
+                leftMat.RemoveRow(row);
+                leftMat.RemoveColumn(col);
+                leftRowLabels.RemoveAt(row);
+                leftColLabels.RemoveAt(col);
+
+                // 2. PRÉVENTION DES SOUS-CYCLES
+                string startNode = source;
+                string endNode = destination;
+
+                var prev = leftEdges.FirstOrDefault(e => e.destination == startNode);
+                while (prev != default) { startNode = prev.source; prev = leftEdges.FirstOrDefault(e => e.destination == startNode); }
+
+                var next = leftEdges.FirstOrDefault(e => e.source == endNode);
+                while (next != default) { endNode = next.destination; next = leftEdges.FirstOrDefault(e => e.source == endNode); }
+
+                // On cherche à quels indices correspondent la fin et le début dans notre matrice RETRÉCIE
+                int rIndex = leftRowLabels.IndexOf(endNode);
+                int cIndex = leftColLabels.IndexOf(startNode);
+
+                // Si les deux sommets sont encore présents dans la matrice, on bloque l'arête
+                if (rIndex != -1 && cIndex != -1)
+                {
+                    leftMat.SetValue(rIndex, cIndex, float.PositiveInfinity);
+                }
+
+                // 3. Évaluation de la branche gauche
+                float leftCost = current.Cost + ReduceMatrix(leftMat);
+
+                if (leftCost < bestCost)
+                {
+                    branches.Push(new LittleNode(leftMat, leftEdges, leftCost, leftRowLabels, leftColLabels));
                 }
             }
-            while (graph.AdjMat.NbRows != 2);
 
-            (Matrix, List<(string source, string destination)>, float) branch = branches.Pop();
-            return new Tour(branch.Item2, branch.Item3);
+            return new Tour(bestTourEdges, bestCost);
         }
 
         // --- Méthodes utilitaires réalisant des étapes de l'algorithme de Little
 
 
+        // Structure pour stocker l'état d'une branche de l'arbre
+        private record LittleNode(
+        Matrix Mat,
+        List<(string source, string destination)> Edges,
+        float Cost,
+        List<string> RowLabels, // Garde la trace du nom des lignes restantes
+        List<string> ColLabels  // Garde la trace du nom des colonnes restantes
+        );
+
         // Réduit la matrice `m` et revoie la valeur totale de la réduction
         // Après appel à cette méthode, la matrice `m` est *modifiée*.
-            public static float ReduceMatrix(Matrix m)
+        public static float ReduceMatrix(Matrix m)
             {
                 float reductionCost = 0;
             for (int i = 0; i < m.NbRows; i++)

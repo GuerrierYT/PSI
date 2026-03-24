@@ -34,6 +34,21 @@
             }
         }
 
+        public Matrix Clone()
+        {
+            Matrix clone = new Matrix(this.NbRows, this.NbColumns);
+            for (int i = 0; i < this.NbRows; i++)
+            {
+                for (int j = 0; j < this.NbColumns; j++)
+                {
+                    float val = this.GetValue(i, j);
+                    clone.SetValue(i, j, val);
+                }
+            }
+
+            return clone;
+        }
+
         // Propriétés
 
         // Propriété : valeur par défaut utilisée pour remplir les nouvelles cases
