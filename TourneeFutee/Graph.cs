@@ -50,6 +50,8 @@ namespace TourneeFutee
             get { return adjMat; }
         }
 
+        // Méthodes
+
         // --- Gestion des sommets ---
         public bool IsAlreadyVertexExists(string name)
         {

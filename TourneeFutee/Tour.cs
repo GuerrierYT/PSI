@@ -3,6 +3,7 @@
     // Modélise une tournée dans le cadre du problème du voyageur de commerce
     public class Tour
     {
+        // Attributs
         private float cost;
         private List<(string source, string destination)> segments;
 
@@ -21,12 +22,13 @@
         }
 
         // Constructeur de la classe Tour
-
         public Tour(List<(string source, string destination)> segments, float cost)
         {
             this.cost = cost;
             this.segments = segments;
         }
+
+        // Méthodes
 
         // Renvoie vrai si la tournée contient le trajet `source`->`destination`
         public bool ContainsSegment((string source, string destination) segment)
@@ -45,8 +47,5 @@
                 Console.WriteLine(segment.source + " -> " + segment.destination);
             }
         }
-
-        // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
-
     }
 }

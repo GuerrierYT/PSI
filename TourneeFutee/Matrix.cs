@@ -104,6 +104,7 @@
             }
         }
 
+        // Méthodes
 
         /* Insère une ligne à l'indice `i`. Décale les lignes suivantes vers le bas.
          * Toutes les cases de la nouvelle ligne contiennent DefaultValue.

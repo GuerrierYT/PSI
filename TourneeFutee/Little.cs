@@ -6,7 +6,7 @@ namespace TourneeFutee
     // en utilisant l'algorithme de Little
     public class Little
     {
-        Graph graph;
+        private Graph graph;
         // Instancie le planificateur en spécifiant le graphe modélisant un problème de voyageur de commerce
         public Little(Graph graph)
         {
@@ -36,8 +36,8 @@ namespace TourneeFutee
             Matrix rootMatrix = this.graph.AdjMat.Clone();
             float initialCost = ReduceMatrix(rootMatrix);
 
-            Stack<LittleNode> branches = new Stack<LittleNode>();
-            branches.Push(new LittleNode(
+            Stack<LittleNoeud> branches = new Stack<LittleNoeud>();
+            branches.Push(new LittleNoeud(
                 rootMatrix,
                 new List<(string source, string destination)>(),
                 initialCost,
@@ -51,7 +51,7 @@ namespace TourneeFutee
             // --- 2. EXPLORATION DE L'ARBRE ---
             while (branches.Count > 0)
             {
-                LittleNode current = branches.Pop();
+                LittleNoeud current = branches.Pop();
 
                 if (current.Cost >= bestCost) continue;
 
@@ -98,7 +98,7 @@ namespace TourneeFutee
 
                 if (rightCost < bestCost)
                 {
-                    branches.Push(new LittleNode(rightMat, new List<(string source, string destination)>(current.Edges), rightCost, new List<string>(current.RowLabels), new List<string>(current.ColLabels)));
+                    branches.Push(new LittleNoeud(rightMat, new List<(string source, string destination)>(current.Edges), rightCost, new List<string>(current.RowLabels), new List<string>(current.ColLabels)));
                 }
 
                 // -- BRANCHE GAUCHE (On accepte l'arête) --
@@ -140,7 +140,7 @@ namespace TourneeFutee
 
                 if (leftCost < bestCost)
                 {
-                    branches.Push(new LittleNode(leftMat, leftEdges, leftCost, leftRowLabels, leftColLabels));
+                    branches.Push(new LittleNoeud(leftMat, leftEdges, leftCost, leftRowLabels, leftColLabels));
                 }
             }
 
@@ -150,14 +150,7 @@ namespace TourneeFutee
         // --- Méthodes utilitaires réalisant des étapes de l'algorithme de Little
 
 
-        // Structure pour stocker l'état d'une branche de l'arbre
-        private record LittleNode(
-        Matrix Mat,
-        List<(string source, string destination)> Edges,
-        float Cost,
-        List<string> RowLabels, // Garde la trace du nom des lignes restantes
-        List<string> ColLabels  // Garde la trace du nom des colonnes restantes
-        );
+
 
         // Réduit la matrice `m` et revoie la valeur totale de la réduction
         // Après appel à cette méthode, la matrice `m` est *modifiée*.
