@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TourneeFutee
+﻿namespace TourneeFutee
 {
     // Résout le problème de voyageur de commerce défini par le graphe `graph`
     // en utilisant l'algorithme de Little
@@ -149,41 +147,38 @@ namespace TourneeFutee
 
         // --- Méthodes utilitaires réalisant des étapes de l'algorithme de Little
 
-
-
-
         // Réduit la matrice `m` et revoie la valeur totale de la réduction
         // Après appel à cette méthode, la matrice `m` est *modifiée*.
         public static float ReduceMatrix(Matrix m)
-            {
-                float reductionCost = 0;
+        {
+            float reductionCost = 0;
             for (int i = 0; i < m.NbRows; i++)
-                {
-                    float minRow = m.GetMinRow(i);
+            {
+                float minRow = m.GetMinRow(i);
                 reductionCost += minRow;
                 for (int j = 0; j < m.NbColumns; j++)
-                    {
-                        m.Mat[i, j] -= minRow;
-                    }
-                }
-                for (int j = 0; j < m.NbColumns; j++)
                 {
-                    float minCol = m.GetMinCol(j);
+                    m.Mat[i, j] -= minRow;
+                }
+            }
+            for (int j = 0; j < m.NbColumns; j++)
+            {
+                float minCol = m.GetMinCol(j);
                 reductionCost += minCol;
                 for (int i = 0; i < m.NbRows; i++)
-                    {
-                        m.Mat[i, j] -= minCol;
-                    }
+                {
+                    m.Mat[i, j] -= minCol;
                 }
-                return reductionCost;
             }
+            return reductionCost;
+        }
 
         // Renvoie le regret de valeur maximale dans la matrice de coûts `m` sous la forme d'un tuple `(int i, int j, float value)`
         // où `i`, `j`, et `value` contiennent respectivement la ligne, la colonne et la valeur du regret maximale
         public static (int i, int j, float value) GetMaxRegret(Matrix m)
         {
             Matrix regrets = new Matrix(m.NbRows, m.NbColumns, 0.0f);
-            (int,int,float) maxRegret = (0, 0, float.MinValue);
+            (int, int, float) maxRegret = (0, 0, float.MinValue);
             for (int i = 0; i < m.NbRows; i++)
             {
                 for (int j = 0; j < m.NbColumns; j++)
@@ -210,7 +205,7 @@ namespace TourneeFutee
         {
             string currentCity = segment.destination;
             int count = 1;
-            bool found= true;
+            bool found = true;
             while (found!)
             {
                 found = false;
@@ -225,7 +220,7 @@ namespace TourneeFutee
                     }
                 }
 
-                if(currentCity == segment.source)
+                if (currentCity == segment.source)
                 {
                     return count < nbCities;
                 }
@@ -233,8 +228,5 @@ namespace TourneeFutee
             return false;
 
         }
-        // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
-
-
-        }
-    } //FIN
+    }
+} //FIN

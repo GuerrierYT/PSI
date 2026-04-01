@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Xml.Linq;
-
-namespace TourneeFutee
+﻿namespace TourneeFutee
 {
     public class Graph
     {
@@ -307,6 +304,7 @@ namespace TourneeFutee
             }
         }
 
+        // Renvoie le nom du sommet correspondant à l'index `idCherche`
         public string GetVertexNameFromInt(int idCherche)
         {
             foreach (Vertex v in vertices.Values)

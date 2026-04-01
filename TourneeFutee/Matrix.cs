@@ -3,7 +3,6 @@
     public class Matrix
     {
         // Attributs
-
         private int nbRows;
         private int nbColumns;
         private float defaultValue;
@@ -34,6 +33,7 @@
             }
         }
 
+        // Constructeur de copie, permet de créer une nouvelle matrice identique à une matrice existante
         public Matrix Clone()
         {
             Matrix clone = new Matrix(this.NbRows, this.NbColumns);
@@ -324,7 +324,7 @@
         {
             for (int i = 0; i < nbRows; i++)
             {
-                mat[i,i] = float.PositiveInfinity;
+                mat[i, i] = float.PositiveInfinity;
             }
             return this;
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TourneeFutee
+﻿namespace TourneeFutee
 {
     internal class Vertex
     {
@@ -26,7 +20,7 @@ namespace TourneeFutee
         public string Name
         {
             get { return name; }
-            set { this.name = value; }  //A verif
+            set { this.name = value; }
         }
 
         // Propriété pour accéder à l'index du sommet
