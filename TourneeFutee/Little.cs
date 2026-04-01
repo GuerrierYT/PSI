@@ -4,13 +4,16 @@
     // en utilisant l'algorithme de Little
     public class Little
     {
+        // Attribut
         private Graph graph;
+
         // Instancie le planificateur en spécifiant le graphe modélisant un problème de voyageur de commerce
         public Little(Graph graph)
         {
             this.graph = graph;
         }
 
+        // Propriété pour accéder au graphe modélisant le problème de voyageur de commerce
         public Graph Graph
         {
             get { return graph; }
