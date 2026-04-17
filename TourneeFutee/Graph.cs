@@ -316,5 +316,10 @@
             }
             return null;
         }
+
+        public bool ContainsVertex(string name)
+        {
+            return vertices.ContainsKey(name);
+        }
     }
 }

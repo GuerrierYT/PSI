@@ -21,6 +21,26 @@
             get { return segments.Count; }
         }
 
+        // Liste des trajets de la tournée, où chaque trajet est un tuple (source, destination)
+        public List<(string source, string destination)> Segments
+        {
+            get { return segments; }
+        }
+
+        public IList<string> Vertices
+        {
+            get
+            {
+                HashSet<string> vertices = new HashSet<string>();
+                foreach (var segment in segments)
+                {
+                    vertices.Add(segment.source);
+                    vertices.Add(segment.destination);
+                }
+                return vertices.ToList();
+            }
+        }
+
         // Constructeur de la classe Tour
         public Tour(List<(string source, string destination)> segments, float cost)
         {
