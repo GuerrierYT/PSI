@@ -41,11 +41,24 @@
             }
         }
 
-        // Constructeur de la classe Tour
+        // Constructeurs de la classe Tour
+
         public Tour(List<(string source, string destination)> segments, float cost)
         {
             this.cost = cost;
             this.segments = segments;
+        }
+
+        public Tour(List<string> vertices, float cost)
+        {
+            this.cost = cost;
+            this.segments = new List<(string source, string destination)>();
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                string source = vertices[i];
+                string destination = vertices[(i + 1) % vertices.Count]; // Cycle
+                segments.Add((source, destination));
+            }
         }
 
         // Méthodes
