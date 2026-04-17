@@ -14,7 +14,7 @@ namespace TourneeFutee
         // ─────────────────────────────────────────────────────────────────────
 
         private readonly string _connectionString;
-
+        private readonly MySqlConnection _connection;
         // TODO : si vous avez besoin de maintenir une connexion ouverte,
         //        ajoutez un attribut MySqlConnection ici.
 
@@ -36,8 +36,11 @@ namespace TourneeFutee
         /// <exception cref="Exception">Levée si la connexion échoue.</exception>
         public ServicePersistance(string serverIp, string dbname, string user, string pwd)
         {
-          // TODO : initialiser et ouvrir la connexion à la base de données
-        // Exemple :
+            // TODO : initialiser et ouvrir la connexion à la base de données
+            _connection = new MySqlConnection();
+            _connection.ConnectionString = serverIp;
+            _connection.Open();
+            // Exemple :
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
 
             // TODO : tester la connexion dès la construction
@@ -123,7 +126,7 @@ namespace TourneeFutee
         /// <param name="id">Identifiant de la tournée à charger.</param>
         /// <returns>Instance de <see cref="Tour"/> reconstituée.</returns>
         public Tour LoadTour(uint id)
-        {
+        {           
             // TODO : implémenter le chargement de la tournée
             //
             // Ordre recommandé :
