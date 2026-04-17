@@ -5,7 +5,7 @@
         // Attributs privés de la classe Graph
         private int order;
         private bool directed;
-        private float noEdgeValue;
+        private float noEdgeValue;  
         private Dictionary<string, Vertex> vertices = new Dictionary<string, Vertex>();
         private Matrix adjMat;
 
