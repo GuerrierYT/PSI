@@ -37,15 +37,21 @@ namespace TourneeFutee
         public ServicePersistance(string serverIp, string dbname, string user, string pwd)
         {
             // TODO : initialiser et ouvrir la connexion à la base de données
-            _connection = new MySqlConnection();
-            _connection.ConnectionString = serverIp;
-            _connection.Open();
-            // Exemple :
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
+            try
+            {
+                _connection = new MySqlConnection(_connectionString);
+                _connection.Open();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Erreur lors de la connexion : {ex.Message}");
+                throw;
+            }
+            // Exemple :
 
             // TODO : tester la connexion dès la construction
             //        (ouvrir puis fermer une connexion pour valider les paramètres)
-            throw new NotImplementedException("Constructeur non implémenté.");
         }
 
         // ─────────────────────────────────────────────────────────────────────
