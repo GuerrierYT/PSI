@@ -46,6 +46,10 @@
         {
             get { return adjMat; }
         }
+        public float NoEdgeValue
+        {
+            get { return noEdgeValue; }
+        }
 
         // Méthodes
 

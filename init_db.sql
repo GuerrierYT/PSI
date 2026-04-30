@@ -9,8 +9,8 @@
 --
 -- TODO : compléter les parties marquées "TODO" ci-dessous.
 -- =============================================================================
-CREATE DATABASE tourneefutee;
-USE tourneefutee;
+CREATE DATABASE tourneefutee_test;
+USE tourneefutee_test;
 -- Supprimer les tables dans l'ordre inverse des dépendances (pour réinitialiser)
 DROP TABLE IF EXISTS EtapeTournee;
 DROP TABLE IF EXISTS Tournee;

@@ -77,8 +77,17 @@ namespace TourneeFutee
             //
             // Exemple pour récupérer l'id généré :
             //   uint id = Convert.ToUInt32(cmd.ExecuteScalar());
-
-            throw new NotImplementedException("SaveGraph non implémenté.");
+                string queryInsertGraph = "INSERT INTO Graphe (is_oriented, ordre, noEdgeValue) VALUES (@isOriented, @ordre, @noEdgeValue); SELECT LAST_INSERT_ID();";
+                uint graphId;
+            using (MySqlCommand commande = new MySqlCommand(queryInsertGraph, _connection))
+                {
+                    commande.Parameters.AddWithValue("@isOriented", g.Directed);
+                    commande.Parameters.AddWithValue("@ordre", g.Order);
+                    commande.Parameters.AddWithValue("@noEdgeValue", g.NoEdgeValue);
+                graphId = Convert.ToUInt32(commande.LastInsertedId);
+            }
+            foreach (string in g.Vertices)
+                throw new NotImplementedException("SaveGraph non implémenté.");
         }
 
         /// <summary>
