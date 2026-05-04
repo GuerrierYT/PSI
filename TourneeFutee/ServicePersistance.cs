@@ -36,7 +36,6 @@ namespace TourneeFutee
         /// <exception cref="Exception">Levée si la connexion échoue.</exception>
         public ServicePersistance(string serverIp, string dbname, string user, string pwd)
         {
-            // TODO : initialiser et ouvrir la connexion à la base de données
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
             try
             {
@@ -48,10 +47,6 @@ namespace TourneeFutee
                 Console.WriteLine($"Erreur lors de la connexion : {ex.Message}");
                 throw;
             }
-            // Exemple :
-
-            // TODO : tester la connexion dès la construction
-            //        (ouvrir puis fermer une connexion pour valider les paramètres)
         }
 
         // ─────────────────────────────────────────────────────────────────────
@@ -66,10 +61,6 @@ namespace TourneeFutee
         /// <returns>Identifiant du graphe en base de données (AUTO_INCREMENT).</returns>
         public uint SaveGraph(Graph g)
         {
-            // TODO : implémenter la sauvegarde du graphe
-            //
-            // Ordre recommandé :
-            //   1. INSERT dans la table Graphe -> récupérer l'id avec LAST_INSERT_ID()
             string queryInsertGraph = "INSERT INTO Graphe (est_oriente, ordre, noEdgeValue) VALUES (@estOriente, @ordre, @noEdgeValue); SELECT LAST_INSERT_ID();";
             uint graphId;
             using (MySqlCommand commande = new MySqlCommand(queryInsertGraph, _connection))
@@ -80,8 +71,6 @@ namespace TourneeFutee
                 graphId = Convert.ToUInt32(commande.ExecuteScalar());
             }
 
-            // 2. Pour chaque sommet de g : INSERT dans Sommet
-            // On utilise un dictionnaire pour conserver la correspondance : indice C# -> id BdD
             System.Collections.Generic.Dictionary<int, uint> indexToDbId = new System.Collections.Generic.Dictionary<int, uint>();
             
             string queryInsertSommet = "INSERT INTO Sommet (graphe_id, nom, valeur) VALUES (@grapheId, @nom, @valeur); SELECT LAST_INSERT_ID();";
@@ -100,8 +89,6 @@ namespace TourneeFutee
                 }
             }
 
-            // 3. Pour chaque arc de la matrice d'adjacence (poids != +inf) :
-            //    INSERT dans Arc (sommet_source_id, sommet_dest_id, poids, graphe_id)
             string queryInsertArc = "INSERT INTO Arc (graphe_id, sommet_source, sommet_dest, poids) VALUES (@grapheId, @source, @dest, @poids);";
             for (int i = 0; i < g.Order; i++)
             {
