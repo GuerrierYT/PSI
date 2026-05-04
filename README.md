@@ -6,8 +6,7 @@ Projet de A2 S4
 * Loris LIGONNIERE
 * Antoine MASCIOTRA
 
-Diagramme de classes :
-
+# Diagramme de classes :
 ```mermaid
 classDiagram
     direction LR
@@ -148,3 +147,55 @@ classDiagram
     LittleNoeud "1" o-- "1" Matrix : possede copie
     
     Vertex -- Vertex : voisins
+```
+# Diagramme Entité/Association de la base de données
+```mermaid
+classDiagram
+    direction TB
+
+    class GRAPHE {
+        +int unsigned id [PK]
+        +tinyint est_oriente
+        +int ordre
+        +float noEdgeValue
+    }
+
+    class TOURNEE {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +float cout_total
+    }
+
+    class SOMMET {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +varchar(50) nom
+        +float valeur
+    }
+
+    class ETAPETOURNEE {
+        +int unsigned tournee_id [PK, FK]
+        +int unsigned numero_ordre [PK]
+        +int unsigned sommet_id [FK]
+    }
+
+    class ARC {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +int unsigned sommet_source [FK]
+        +int unsigned sommet_dest [FK]
+        +float poids
+    }
+
+    %% 1. Squelette principal (Dessiné en premier, traits pleins)
+    GRAPHE "1,1" -- "0,N" SOMMET : contient
+    SOMMET "1,1" --> "0,N" ARC : source
+    
+    GRAPHE "1,1" -- "0,N" TOURNEE : possede
+    TOURNEE "1,1" -- "1,N" ETAPETOURNEE : contient
+
+    %% 2. Liens secondaires (Dessinés autour, pointillés)
+    SOMMET "1,1" ..> "0,N" ARC : destination
+    GRAPHE "1,1" .. "0,N" ARC : contient
+    SOMMET "1,1" .. "0,N" ETAPETOURNEE : correspond_a
+```
