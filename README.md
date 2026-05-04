@@ -8,6 +8,7 @@ Projet de A2 S4
 
 Diagramme de classes :
 
+class diagram
     %% --- Point d'entrée ---
     class Program {
         + Main(string[] args)$ void
