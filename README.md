@@ -9,6 +9,9 @@ Projet de A2 S4
 Diagramme de classes :
 
 ```mermaid
+classDiagram
+    direction LR
+
     %% --- Point d'entrée ---
     class Program {
         + Main(string[] args)$ void
@@ -130,19 +133,18 @@ Diagramme de classes :
     }
 
     %% --- Relations ---
-    Program ..> ServicePersistance : utilise >
-    Program ..> Little : utilise >
+    Program ..> ServicePersistance : utilise
+    Program ..> Little : utilise
     
-    ServicePersistance ..> Graph : sauvegarde/charge >
-    ServicePersistance ..> Tour : sauvegarde/charge >
-    ServicePersistance ..> Matrix : accède aux données >
+    ServicePersistance ..> Graph : sauvegarde/charge
+    ServicePersistance ..> Tour : sauvegarde/charge
 
-    Graph "1" *-- "*" Vertex : contient >
-    Graph "1" *-- "1" Matrix : possède >
-    Vertex "*" -- "*" Vertex : voisins >
+    Little "1" o-- "1" Graph : manipule
+    Little ..> Tour : produit
+    Little ..> LittleNoeud : instancie
     
-    Little "1" o-- "1" Graph : manipule >
-    Little ..> Tour : produit >
-    Little ..> LittleNoeud : instancie >
+    Graph "1" *-- "1" Matrix : possede
+    Graph "1" *-- "*" Vertex : contient
+    LittleNoeud "1" o-- "1" Matrix : possede copie
     
-    LittleNoeud "1" o-- "1" Matrix : contient >
+    Vertex -- Vertex : voisins
