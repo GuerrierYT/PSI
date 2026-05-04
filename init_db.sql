@@ -9,6 +9,7 @@
 --
 -- TODO : compléter les parties marquées "TODO" ci-dessous.
 -- =============================================================================
+DROP DATABASE IF EXISTS tourneefutee_test;
 CREATE DATABASE tourneefutee_test;
 USE tourneefutee_test;
 -- Supprimer les tables dans l'ordre inverse des dépendances (pour réinitialiser)
@@ -25,7 +26,11 @@ DROP TABLE IF EXISTS Graphe;
 CREATE TABLE Graphe (
     id           INT UNSIGNED    NOT NULL AUTO_INCREMENT,
     est_oriente  TINYINT(1)      NOT NULL DEFAULT 0,   -- 0 = non orienté, 1 = orienté
-    valeur_absence_arc FLOAT     NOT NULL DEFAULT 0,   -- valeur par défaut en cas d'absence d'arc (ex: 0)
+    ordre INT,
+    noEdgeValue float,
+    
+    -- TODO : ajouter d'autres colonnes si nécessaire
+    --        (ex : nom du graphe, nombre de sommets pour validation, ...)
 
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -40,7 +45,9 @@ CREATE TABLE Sommet (
     graphe_id   INT UNSIGNED    NOT NULL,
     nom         VARCHAR(50)     NOT NULL,               -- nom/label du sommet (ex : "A", "Paris")
     valeur      FLOAT           NULL,                   -- valeur associée au sommet (peut être NULL)
-    indice      INT             NOT NULL,               -- indice corrélé à la matrice d'adjacence C#
+
+    -- TODO : ajouter d'autres colonnes si nécessaire
+    --        (ex : indice dans la matrice d'adjacence pour faciliter le chargement)
 
     PRIMARY KEY (id),
     FOREIGN KEY (graphe_id) REFERENCES Graphe(id) ON DELETE CASCADE

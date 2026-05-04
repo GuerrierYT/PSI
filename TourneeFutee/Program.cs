@@ -1,4 +1,4 @@
-﻿namespace TourneeFutee
+namespace TourneeFutee
 {
     internal class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace TourneeFutee
+namespace TourneeFutee
 {
     // Modélise une tournée dans le cadre du problème du voyageur de commerce
     public class Tour
@@ -31,13 +31,12 @@
         {
             get
             {
-                HashSet<string> vertices = new HashSet<string>();
+                List<string> vertices = new List<string>();
                 foreach (var segment in segments)
                 {
                     vertices.Add(segment.source);
-                    vertices.Add(segment.destination);
                 }
-                return vertices.ToList();
+                return vertices;
             }
         }
 
