@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# JetBrains Rider / IntelliJ IDEA
+.idea/
