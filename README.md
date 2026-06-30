@@ -46,6 +46,165 @@ Le coeur du projet est une application .NET 8 en C#. Elle fournit des classes po
 `-- .gitignore
 ```
 
+## Diagramme de classes
+
+```mermaid
+classDiagram
+    direction LR
+
+    class Program {
+        +Main(args) void
+    }
+
+    class Graph {
+        -int order
+        -bool directed
+        -float noEdgeValue
+        -Dictionary vertices
+        -Matrix adjMat
+        +int Order
+        +bool Directed
+        +Matrix AdjMat
+        +float NoEdgeValue
+        +AddVertex(string name, float value) void
+        +RemoveVertex(string name) void
+        +AddEdge(string sourceName, string destinationName, float weight) void
+        +RemoveEdge(string sourceName, string destinationName) void
+        +GetEdgeWeight(string sourceName, string destinationName) float
+        +SetEdgeWeight(string sourceName, string destinationName, float weight) void
+        +GetNeighbors(string vertexName) List
+    }
+
+    class Vertex {
+        -string name
+        -int index
+        -float value
+        -List neighbor
+        +string Name
+        +int Index
+        +float Value
+        +List Neighbor
+    }
+
+    class Matrix {
+        -int nbRows
+        -int nbColumns
+        -float defaultValue
+        -floatArray mat
+        +int NbRows
+        +int NbColumns
+        +float DefaultValue
+        +float MaxValue
+        +AddRow(int i) void
+        +AddColumn(int j) void
+        +RemoveRow(int i) void
+        +RemoveColumn(int j) void
+        +GetValue(int i, int j) float
+        +SetValue(int i, int j, float v) void
+        +Clone() Matrix
+    }
+
+    class Little {
+        -Graph graph
+        +Graph Graph
+        +ComputeOptimalTour() Tour
+        +ReduceMatrix(Matrix m) float
+        +GetMaxRegret(Matrix m) tuple
+        +IsForbiddenSegment(segment, includedSegments, nbCities) bool
+    }
+
+    class LittleNoeud {
+        -Matrix mat
+        -List edges
+        -float cost
+        -List rowLabels
+        -List colLabels
+        +Matrix Mat
+        +List Edges
+        +float Cost
+        +List RowLabels
+        +List ColLabels
+    }
+
+    class Tour {
+        -float cost
+        -List segments
+        +float Cost
+        +int NbSegments
+        +List Segments
+        +IList Vertices
+        +ContainsSegment(segment) bool
+        +Print() void
+    }
+
+    class ServicePersistance {
+        -string connectionString
+        -MySqlConnection connection
+        +SaveGraph(Graph g) uint
+        +LoadGraph(uint id) Graph
+        +SaveTour(uint graphId, Tour t) uint
+        +LoadTour(uint id) Tour
+    }
+
+    Program ..> Graph : utilise
+    Graph *-- Matrix : matrice d'adjacence
+    Graph o-- Vertex : sommets
+    Vertex --> Vertex : voisins
+    Little --> Graph : resout
+    Little ..> Tour : produit
+    Little ..> LittleNoeud : explore
+    LittleNoeud *-- Matrix : matrice reduite
+    ServicePersistance ..> Graph : sauvegarde/charge
+    ServicePersistance ..> Tour : sauvegarde/charge
+```
+
+## Diagramme de base de donnees
+
+```mermaid
+erDiagram
+    GRAPHE ||--o{ SOMMET : contient
+    GRAPHE ||--o{ ARC : possede
+    SOMMET ||--o{ ARC : source
+    SOMMET ||--o{ ARC : destination
+    GRAPHE ||--o{ TOURNEE : associe
+    TOURNEE ||--o{ ETAPE_TOURNEE : contient
+    SOMMET ||--o{ ETAPE_TOURNEE : reference
+
+    GRAPHE {
+        int id PK
+        tinyint est_oriente
+        int ordre
+        float noEdgeValue
+    }
+
+    SOMMET {
+        int id PK
+        int graphe_id FK
+        varchar nom
+        float valeur
+    }
+
+    ARC {
+        int id PK
+        int graphe_id FK
+        int sommet_source FK
+        int sommet_dest FK
+        float poids
+    }
+
+    TOURNEE {
+        int id PK
+        int graphe_id FK
+        float cout_total
+    }
+
+    ETAPE_TOURNEE {
+        int tournee_id PK,FK
+        int numero_ordre PK
+        int sommet_id FK
+    }
+```
+
 ## Prerequis
 
 - .NET SDK 8.0 ou plus recent.
