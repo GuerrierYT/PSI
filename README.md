@@ -46,163 +46,201 @@ Le coeur du projet est une application .NET 8 en C#. Elle fournit des classes po
 `-- .gitignore
 ```
 
-## Diagramme de classes
+## Diagramme de classes :
 
 ```mermaid
 classDiagram
     direction LR
 
+    %% --- Point d'entrée ---
     class Program {
-        +Main(args) void
+        + Main(string[] args)$ void
     }
 
-    class Graph {
-        -int order
-        -bool directed
-        -float noEdgeValue
-        -Dictionary vertices
-        -Matrix adjMat
-        +int Order
-        +bool Directed
-        +Matrix AdjMat
-        +float NoEdgeValue
-        +AddVertex(string name, float value) void
-        +RemoveVertex(string name) void
-        +AddEdge(string sourceName, string destinationName, float weight) void
-        +RemoveEdge(string sourceName, string destinationName) void
-        +GetEdgeWeight(string sourceName, string destinationName) float
-        +SetEdgeWeight(string sourceName, string destinationName, float weight) void
-        +GetNeighbors(string vertexName) List
+    %% --- Persistance MySQL ---
+    class ServicePersistance {
+        - string _connectionString
+        - MySqlConnection _connection
+        + ServicePersistance(string serverIp, string dbname, string user, string pwd)
+        + SaveGraph(Graph g) uint
+        + LoadGraph(uint id) Graph
+        + SaveTour(uint graphId, Tour t) uint
+        + LoadTour(uint id) Tour
+        - OpenConnection() MySqlConnection
     }
 
-    class Vertex {
-        -string name
-        -int index
-        -float value
-        -List neighbor
-        +string Name
-        +int Index
-        +float Value
-        +List Neighbor
-    }
-
-    class Matrix {
-        -int nbRows
-        -int nbColumns
-        -float defaultValue
-        -floatArray mat
-        +int NbRows
-        +int NbColumns
-        +float DefaultValue
-        +float MaxValue
-        +AddRow(int i) void
-        +AddColumn(int j) void
-        +RemoveRow(int i) void
-        +RemoveColumn(int j) void
-        +GetValue(int i, int j) float
-        +SetValue(int i, int j, float v) void
-        +Clone() Matrix
-    }
-
+    %% --- Logique de l'Algorithme ---
     class Little {
-        -Graph graph
-        +Graph Graph
-        +ComputeOptimalTour() Tour
-        +ReduceMatrix(Matrix m) float
-        +GetMaxRegret(Matrix m) tuple
-        +IsForbiddenSegment(segment, includedSegments, nbCities) bool
+        - Graph graph
+        + Graph Graph
+        + Little(Graph graph)
+        + ComputeOptimalTour() Tour
+        + ReduceMatrix(Matrix m)$ float
+        + GetMaxRegret(Matrix m)$ Tuple
+        + IsForbiddenSegment(Tuple segment, List includedSegments, int nbCities)$ bool
     }
 
     class LittleNoeud {
-        -Matrix mat
-        -List edges
-        -float cost
-        -List rowLabels
-        -List colLabels
-        +Matrix Mat
-        +List Edges
-        +float Cost
-        +List RowLabels
-        +List ColLabels
+        - Matrix mat
+        - List~Tuple~ edges
+        - float cost
+        - List~string~ rowLabels
+        - List~string~ colLabels
+        + Matrix Mat
+        + List~Tuple~ Edges
+        + float Cost
+        + List~string~ RowLabels
+        + List~string~ ColLabels
+        + LittleNoeud(Matrix mat, List edges, float cost, List rowLabels, List colLabels)
+    }
+
+    %% --- Structure de Données ---
+    class Graph {
+        - int order
+        - bool directed
+        - float noEdgeValue
+        - Dictionary~string, Vertex~ vertices
+        - Matrix adjMat
+        + int Order
+        + bool Directed
+        + Matrix AdjMat
+        + float NoEdgeValue
+        + Graph(bool directed, float noEdgeValue)
+        + IsAlreadyVertexExists(string name) bool
+        + AddVertex(string name, float value) void
+        + RemoveVertex(string name) void
+        + GetVertexValue(string name) float
+        + SetVertexValue(string name, float value) void
+        + GetIntFromVertexName(string name) int
+        + GetNeighbors(string vertexName) List~string~
+        + AddEdge(string s, string d, float w) void
+        + RemoveEdge(string s, string d) void
+        + GetEdgeWeight(string s, string d) float
+        + SetEdgeWeight(string s, string d, float w) void
+        + GetVertexNameFromInt(int id) string
+        + ContainsVertex(string name) bool
+    }
+
+    class Matrix {
+        - int nbRows
+        - int nbColumns
+        - float defaultValue
+        - float[,] mat
+        + float DefaultValue
+        + int NbRows
+        + int NbColumns
+        + float[,] Mat
+        + float MaxValue
+        + Matrix(int nbRows, int nbColumns, float defaultValue)
+        + Clone() Matrix
+        + AddRow(int i) void
+        + AddColumn(int j) void
+        + RemoveRow(int i) void
+        + RemoveColumn(int j) void
+        + GetValue(int i, int j) float
+        + SetValue(int i, int j, float v) void
+        + Print() void
+        + GetMinRow(int i) float
+        + GetMinCol(int j) float
+        + GetMinRowExcept(int i, int exCol) float
+        + GetMinColExcept(int j, int exRow) float
+        + OverrideInfinite() Matrix
+    }
+
+    class Vertex {
+        - string name
+        - int index
+        - float value
+        - List~Vertex~ neighbor
+        + string Name
+        + int Index
+        + float Value
+        + List~Vertex~ Neighbor
+        + Vertex(string name, int index, float value)
     }
 
     class Tour {
-        -float cost
-        -List segments
-        +float Cost
-        +int NbSegments
-        +List Segments
-        +IList Vertices
-        +ContainsSegment(segment) bool
-        +Print() void
+        - float cost
+        - List~Tuple~ segments
+        + float Cost
+        + int NbSegments
+        + List~Tuple~ Segments
+        + IList~string~ Vertices
+        + Tour(List~Tuple~ segments, float cost)
+        + Tour(List~string~ vertices, float cost)
+        + ContainsSegment(Tuple segment) bool
+        + Print() void
     }
 
-    class ServicePersistance {
-        -string connectionString
-        -MySqlConnection connection
-        +SaveGraph(Graph g) uint
-        +LoadGraph(uint id) Graph
-        +SaveTour(uint graphId, Tour t) uint
-        +LoadTour(uint id) Tour
-    }
+    %% --- Relations ---
+    Program ..> ServicePersistance : utilise
+    Program ..> Little : utilise
 
-    Program ..> Graph : utilise
-    Graph *-- Matrix : matrice d'adjacence
-    Graph o-- Vertex : sommets
-    Vertex --> Vertex : voisins
-    Little --> Graph : resout
-    Little ..> Tour : produit
-    Little ..> LittleNoeud : explore
-    LittleNoeud *-- Matrix : matrice reduite
     ServicePersistance ..> Graph : sauvegarde/charge
     ServicePersistance ..> Tour : sauvegarde/charge
+
+    Little "1" o-- "1" Graph : manipule
+    Little ..> Tour : produit
+    Little ..> LittleNoeud : instancie
+
+    Graph "1" *-- "1" Matrix : possede
+    Graph "1" *-- "*" Vertex : contient
+    LittleNoeud "1" o-- "1" Matrix : possede copie
+
+    Vertex -- Vertex : voisins
 ```
 
-## Diagramme de base de donnees
+## Diagramme Entité/Association de la base de données
 
 ```mermaid
-erDiagram
-    GRAPHE ||--o{ SOMMET : contient
-    GRAPHE ||--o{ ARC : possede
-    SOMMET ||--o{ ARC : source
-    SOMMET ||--o{ ARC : destination
-    GRAPHE ||--o{ TOURNEE : associe
-    TOURNEE ||--o{ ETAPE_TOURNEE : contient
-    SOMMET ||--o{ ETAPE_TOURNEE : reference
+classDiagram
+    direction TB
 
-    GRAPHE {
-        int id PK
-        tinyint est_oriente
-        int ordre
-        float noEdgeValue
+    class GRAPHE {
+        +int unsigned id [PK]
+        +tinyint est_oriente
+        +int ordre
+        +float noEdgeValue
     }
 
-    SOMMET {
-        int id PK
-        int graphe_id FK
-        varchar nom
-        float valeur
+    class TOURNEE {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +float cout_total
     }
 
-    ARC {
-        int id PK
-        int graphe_id FK
-        int sommet_source FK
-        int sommet_dest FK
-        float poids
+    class SOMMET {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +varchar(50) nom
+        +float valeur
     }
 
-    TOURNEE {
-        int id PK
-        int graphe_id FK
-        float cout_total
+    class ETAPETOURNEE {
+        +int unsigned tournee_id [PK, FK]
+        +int unsigned numero_ordre [PK]
+        +int unsigned sommet_id [FK]
     }
 
-    ETAPE_TOURNEE {
-        int tournee_id PK,FK
-        int numero_ordre PK
-        int sommet_id FK
+    class ARC {
+        +int unsigned id [PK]
+        +int unsigned graphe_id [FK]
+        +int unsigned sommet_source [FK]
+        +int unsigned sommet_dest [FK]
+        +float poids
     }
+
+    %% 1. Squelette principal (Dessiné en premier, traits pleins)
+    GRAPHE "1,1" -- "0,N" SOMMET : contient
+    SOMMET "1,1" --> "0,N" ARC : source
+
+    GRAPHE "1,1" -- "0,N" TOURNEE : possede
+    TOURNEE "1,1" -- "1,N" ETAPETOURNEE : contient
+
+    %% 2. Liens secondaires (Dessinés autour, pointillés)
+    SOMMET "1,1" ..> "0,N" ARC : destination
+    GRAPHE "1,1" .. "0,N" ARC : contient
+    SOMMET "1,1" .. "0,N" ETAPETOURNEE : correspond_a
 ```
 
 ## Prerequis
